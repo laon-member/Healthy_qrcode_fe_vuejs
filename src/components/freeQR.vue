@@ -1,0 +1,499 @@
+<template>
+  <div>
+    <div class="w-100 mt-5 mb-5">
+      <div class="notQR">
+        <div
+          class="notQRBox"
+          style="border: 1px solid #5c5c5c; border-radius: 10px; overflow: auto"
+        >
+          <div>
+            <div class="mt-3 p-4 font-weight-bold" style="height: 10%">
+              <div class="d-flex">
+                <p :class="mainTitle">{{ $t("정보를 입력해주세요") }}</p>
+                <p :class="UseTitle">{{ $t("저장된 정보를 활용할까요?") }}</p>
+              </div>
+              <hr />
+
+              <div :class="UseSubtitle">
+                <p>
+                  {{ $t("이미 저장된 정보가 있습니다") }}<br />{{
+                    $t("기존 정보를 연결할까요?")
+                  }}
+                </p>
+                <br />
+                <button class="illBtn mt-2" @click="UseCookies">
+                  {{ $t("저장된 정보 연결하기") }}
+                </button>
+              </div>
+
+              <div :class="NewInput">
+                <div>
+                  <div class="pl-4 pr-4">
+                    <p>
+                      {{ $t("저장된 정보를 연결하면 기존에 입력하신") }}<br />{{
+                        $t("정보가 연결되어 저장됩니다")
+                      }}
+                    </p>
+                    <br />
+                    <p>
+                      {{ $t("새로운 정보를 입력하시고자 하는 경우에는")
+                      }}<br />{{ $t("새로 입력하기를 선택해주세요") }}
+                    </p>
+                    <button class="illBtn mt-4" @click.prevent="dontuseCookies">
+                      {{ $t("새로 입력하기") }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div :class="main">
+                <div class="freeIconBtn">
+                  <div class="freeIconBtnList-items">
+                    <button class="btnSize d-flex" @click.prevent="picUpload">
+                      <img
+                        src="./img/pic.png"
+                        alt="사진 업로드"
+                        class="uploadIcon"
+                      />
+                      <div :class="picUse">
+                        <img src="./img/use.png" alt="" class="uploadIconUse" />
+                      </div>
+                    </button>
+                    <button
+                      class="btnSize ml-2 d-flex"
+                      @click.prevent="videoUpload"
+                    >
+                      <img
+                        src="./img/video.png"
+                        alt="비디오 업로드"
+                        class="uploadIcon"
+                      />
+                      <div :class="videoUse">
+                        <img src="./img/use.png" alt="" class="uploadIconUse" />
+                      </div>
+                    </button>
+                    <button
+                      class="btnSize ml-2 d-flex"
+                      @click.prevent="textUpload"
+                    >
+                      <img
+                        src="./img/text.png"
+                        alt="텍스트 업로드"
+                        class="uploadIcon"
+                      />
+                      <div :class="textUse">
+                        <img src="./img/use.png" alt="" class="uploadIconUse" />
+                      </div>
+                    </button>
+                    <button
+                      class="btnSize ml-2 d-flex"
+                      @click.prevent="fileUpload"
+                    >
+                      <img
+                        src="./img/file.png"
+                        alt="링크 업로드"
+                        class="uploadIcon"
+                      />
+                      <div :class="fileUse">
+                        <img src="./img/use.png" alt="" class="uploadIconUse" />
+                      </div>
+                    </button>
+                  </div>
+                </div>
+                <hr />
+                <div id="img" :class="imgBox">
+                  <input
+                    type="file"
+                    accept=".jpg, .png"
+                    class="notshow"
+                    @change="UploadPic"
+                    id="photo"
+                    ref="picFile1"
+                  />
+                  <label for="photo" class="btn btn-success">{{
+                    $t("업로드")
+                  }}</label
+                  ><br />
+                  {{ picName }}
+                </div>
+                <div id="video" :class="videoBox">
+                  <input
+                    type="file"
+                    accept="video/*"
+                    class="illBtn2"
+                    @change="UploadVideo"
+                    id="video"
+                    ref="videoFile"
+                  />
+                  <!-- <label for="video" class="btn btn-success">업로드</label> -->
+                  {{ VideoName }}
+                </div>
+                <div id="text" :class="textBox">
+                  <input
+                    type="text"
+                    maxlength="300"
+                    class="freeInfo"
+                    :placeholder="$t('내용을 입력해주세요')"
+                    size="10"
+                    v-model="freeInfoText"
+                    @keyup="SaveText"
+                  />
+                </div>
+                <div id="link" :class="fileBox">
+                  <input
+                    type="text"
+                    class="illBtn2"
+                    :placeholder="$t('링크를 삽입해주세요')"
+                    v-model="link1"
+                    @keyup="SaveLink"
+                  />
+                  <input
+                    type="text"
+                    class="illBtn2"
+                    :placeholder="$t('링크를 삽입해주세요')"
+                    v-model="link2"
+                    @keyup="SaveLink"
+                  />
+                  <input
+                    type="text"
+                    class="illBtn2"
+                    :placeholder="$t('링크를 삽입해주세요')"
+                    v-model="link3"
+                    @keyup="SaveLink"
+                  />
+                </div>
+                <small>{{ $t("이미지 최대 3개(1M) 및") }}</small
+                ><br />
+                <small>{{ $t("동영상 최대 1개(5M) 등록 가능합니다.") }}</small
+                ><br />
+                <small>{{ $t("글은 최대 300자까지 입력 가능합니다.") }}</small
+                ><br />
+                <small>{{ $t("링크는 최대 3개 가능합니다.") }}</small
+                ><br />
+
+                <div class="mt-4 mb-4">
+                  <div class="mt-3 font-weight-bold" style="height: 10%">
+                    <div class="d-flex">
+                      <p>{{ $t("비밀번호 입력") }}</p>
+                    </div>
+                    <hr />
+                  </div>
+                  <div>
+                    <div>
+                      <div>
+                        <input
+                          type="number"
+                          :placeholder="$t('비밀번호 입력')"
+                          class="illBtn2"
+                          v-model="pw"
+                        />
+                        <input
+                          type="number"
+                          :placeholder="$t('비밀번호 확인')"
+                          class="illBtn2"
+                          v-model="pw2"
+                        />
+                        <br />
+                        <small>{{
+                          $t("비밀번호는 4자리 숫자로 가능합니다")
+                        }}</small
+                        ><br />
+                        <small>{{
+                          $t("비밀번호를 분실 시 수정이 불가능합니다")
+                        }}</small
+                        ><br />
+                        <small>{{
+                          $t("수정은 초기화 후 새로 입력하는 방식입니다")
+                        }}</small
+                        ><br />
+                        <small>{{ $t("비밀번호를 꼭 기억해주세요") }}</small
+                        ><br />
+                        <small>{{
+                          $t("비밀번호는 관리자도 알 수 없습니다")
+                        }}</small
+                        ><br />
+                      </div>
+                      <button class="illBtn mt-5" @click="onSubmit">
+                        {{ $t("완료") }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+
+const instance = axios.create({
+  baseURL: "http://localhost:9000",
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+});
+
+export default {
+  beforeMount() {
+    let letChkCookies = this.$cookies.get("QRCODE_InfoText");
+    if (letChkCookies !== null) {
+      this.mainTitle = "notshow";
+      this.main = "notshow";
+      this.UseTitle = "";
+      this.UseSubtitle = "pl-4 pr-4";
+      this.NewInput = "mt-5";
+    } else {
+      this.mainTitle = "";
+      this.main = "";
+      this.UseTitle = "notshow";
+      this.UseSubtitle = "notshow";
+      this.NewInput = "notshow";
+    }
+  },
+  data() {
+    return {
+      //저장된 정보
+      mainTitle: "",
+      main: "",
+      UseTitle: "notshow",
+      UseSubTitle: "",
+      NewInput: "notshow",
+      //내용
+      picName: "",
+      Picfile: [],
+      PicUrl: "",
+      VideoFile: "",
+      VideoName: "",
+      link1: "",
+      link2: "",
+      link3: "",
+      freeInfoText: "",
+      pw: "",
+      pw2: "",
+      //실행상태
+      picUse: "usingIcon notshow",
+      videoUse: "usingIcon notshow",
+      textUse: "usingIcon",
+      fileUse: "usingIcon notshow",
+      //파일 넣는 상태
+      imgBox: "notshow",
+      videoBox: "notshow",
+      textBox: "show",
+      fileBox: "notshow",
+      //
+    };
+  },
+
+  methods: {
+    picUpload() {
+      this.picUse = "usingIcon";
+      this.videoUse = "usingIcon notshow";
+      this.textUse = "usingIcon notshow";
+      this.fileUse = "usingIcon notshow";
+      this.imgBox = "show";
+      this.videoBox = "notshow";
+      this.textBox = "notshow";
+      this.fileBox = "notshow";
+    },
+    videoUpload() {
+      this.picUse = "usingIcon notshow";
+      this.videoUse = "usingIcon";
+      this.textUse = "usingIcon notshow";
+      this.fileUse = "usingIcon notshow";
+      this.imgBox = "notshow";
+      this.videoBox = "show";
+      this.textBox = "notshow";
+      this.fileBox = "notshow";
+    },
+    textUpload() {
+      this.picUse = "usingIcon notshow";
+      this.videoUse = "usingIcon notshow";
+      this.textUse = "usingIcon";
+      this.fileUse = "usingIcon notshow";
+      this.imgBox = "notshow";
+      this.videoBox = "notshow";
+      this.textBox = "show";
+      this.fileBox = "notshow";
+    },
+    fileUpload() {
+      this.picUse = "usingIcon notshow";
+      this.videoUse = "usingIcon notshow";
+      this.textUse = "usingIcon notshow";
+      this.fileUse = "usingIcon";
+      this.imgBox = "notshow";
+      this.videoBox = "notshow";
+      this.textBox = "notshow";
+      this.fileBox = "show";
+    },
+    UploadPic(e) {
+      if (e.target.files[0].size > 1000000) {
+        alert(this.$t("1MB가 넘는 사진입니다. 다른 사진을 선택해주세요."));
+      } else {
+        this.Picfile.push(this.$refs.picFile1.files[0]);
+        this.picName += this.$refs.picFile1.files[0].name;
+      }
+    },
+    UploadVideo(e) {
+      if (e.target.files[0].size > 5000000) {
+        alert(
+          this.$t("영상의 용량이 5MB가 넘습니다. 다른 영상파일을 선택해주세요")
+        );
+      } else {
+        this.VideoFile = e.target.files[0];
+        this.VideoName = e.target.files[0].name;
+      }
+    },
+    SaveText() {
+      this.$cookies.set("QRCODE_InfoText", this.freeInfoText);
+    },
+    SaveLink() {
+      this.$cookies.set("QRCODE_Link1", this.link1);
+      this.$cookies.set("QRCODE_Link2", this.link2);
+      this.$cookies.set("QRCODE_Link3", this.Link3);
+    },
+    dontuseCookies() {
+      this.mainTitle = "";
+      this.main = "";
+      this.UseTitle = "notshow";
+      this.UseSubtitle = "notshow pl-4 pr-4";
+      this.NewInput = "notshow mt-5";
+    },
+    UseCookies() {
+      this.freeInfoText = this.$cookies.get("QRCODE_InfoText");
+      this.link1 = this.$cookies.get("QRCODE_Link1");
+      this.link2 = this.$cookies.get("QRCODE_Link2");
+      this.link3 = this.$cookies.get("QRCODE_Link3");
+      this.mainTitle = "";
+      this.main = "";
+      this.UseTitle = "notshow";
+      this.UseSubtitle = "notshow pl-4 pr-4";
+      this.NewInput = "notshow mt-5";
+    },
+    onSubmit() {
+      if (this.freeInfoText === "") {
+        alert(this.$t("적어도 텍스트는 입력해주셔야합니다."));
+      } else if (this.Picfile.length > 3) {
+        alert(this.$t("사진은 최대 3장까지 업로드 가능합니다."));
+      } else if (this.VideoFile.length > 2) {
+        alert(this.$t("동영상은 최대 1개까지만 업로드가 가능합니다."));
+      } else if (this.pw === "") {
+        alert(this.$t("비밀번호를 입력해주세요."));
+      } else if (this.pw2 === "") {
+        alert(
+          this.$t("비밀번호 재확인을 위해 확인란에 비밀번호를 입력해주세요.")
+        );
+      } else if (this.pw.length !== 4) {
+        alert(this.$t("비밀번호가 4자리가 아닙니다."));
+      } else if (this.pw !== this.pw2) {
+        alert(this.$t("비밀번호가 일치하지 않습니다."));
+      } else {
+        let link = [];
+        link.push(this.link1);
+        link.push(this.link2);
+        link.push(this.link3);
+        let formData = new FormData();
+        formData.append("picFile1", this.Picfile[0]);
+        formData.append("picFile1", this.Picfile[1]);
+        formData.append("picFile1", this.Picfile[2]);
+        formData.append("videoFile", this.VideoFile);
+        formData.append("Link", link);
+        formData.append("qrData", this.$store.state.Info.qrlist);
+        formData.append("freeInfoText", this.freeInfoText);
+        formData.append("pw", this.pw);
+        instance
+          .post("freeQRUpload", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((res) => {
+            if (res.data === true) {
+              alert("변경이 완료되었습니다.");
+            }
+          });
+      }
+    },
+  },
+};
+</script>
+
+<style>
+* {
+  transition: ease 0.3s;
+}
+.notshow {
+  display: none !important;
+}
+.show {
+  display: block;
+}
+
+.UserSer {
+  background-color: #f5b46e !important;
+}
+.illBtn {
+  width: 100%;
+  height: 40px;
+  margin-top: 8px;
+  border: 1px solid #a9a9a9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.illBtn2 {
+  width: 100%;
+  height: 40px;
+  margin-top: 0px;
+  margin-bottom: 8px;
+  border: 1px solid #a9a9a9;
+  text-align: left !important;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+.freeInfo {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+}
+.uploadIcon {
+  width: 20px;
+  height: 20px;
+}
+.btnSize {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.btnSize:focus {
+  outline: none;
+}
+.usingIcon {
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  margin-left: 5px;
+}
+.uploadIconUse {
+  width: 8px;
+  height: 8px;
+}
+.freeIconBtn {
+  display: flex;
+  width: 50%;
+  justify-content: flex-start;
+  margin-left: 1rem;
+}
+.freeIconBtnList-items {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+</style>
