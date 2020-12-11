@@ -15,6 +15,7 @@ import QRsucces from "@/components/QRsucces";
 import reset from "@/components/reset";
 import freeInfo from "@/components/UserInfoFree";
 import NotFound from "@/components/notFound";
+import UseLaw from "@/components/Use";
 
 Vue.use(Router);
 
@@ -135,6 +136,14 @@ const router = new Router({
       },
     },
     {
+      path: "/UseLaw",
+      name: "UseLaw",
+      component: UseLaw,
+      meta: {
+        title: "이용약관 및 라이선스조항",
+      },
+    },
+    {
       path: "/notFound",
       name: "notFound",
       component: NotFound,
@@ -144,7 +153,7 @@ const router = new Router({
     },
     {
       path: "/*",
-      name: "notFound",
+      name: "notFoundAny",
       component: NotFound,
       meta: {
         title: "QRCODE 존재하지 않는 페이지",

@@ -1,23 +1,29 @@
 <template>
   <div>
-    <div class="w-100 mt-5 mb-5">
+    <div class="w-100 mb-5">
       <div class="notQR">
         <div
           class="notQRBox"
           style="border: 1px solid #5c5c5c; border-radius: 10px; overflow-x: auto"
         >
-          <div class="mt-3 p-4 font-weight-bold" style="height: 10%">
-            <p>{{ $t("정보입력방식을 선택해주세요.") }}</p>
+          <div
+            class="mt-3 p-4 font-weight-bold"
+            style="font-size: 22px; color: #333"
+          >
+            <p>{{ $t("정보입력방식을") }}</p>
+            <p>{{ $t("선택해주세요.") }}</p>
             <hr />
           </div>
           <div class="show">
-            <div class="mt-4 pt-4 pl-4 pr-4">
+            <div class="pl-4 pr-4">
               <button class="infoBtn" @click.prevent="embtn">
                 {{ $t("응급정보입력") }}
               </button>
-              <div class="mt-4 pl-3">
-                <p>{{ $t("응급상황에 필요한 정보를 입력해주세요.") }}</p>
-                <p>
+              <div class="mt-4">
+                <p class="InfoTitle">
+                  {{ $t("응급상황에 필요한 정보를 입력해주세요.") }}
+                </p>
+                <p class="InfoTitle">
                   {{ $t("응급상황에서 스캔하면") }}<br />{{
                     $t("입력된 응급정보를 활용할 수 있습니다.")
                   }}
@@ -28,13 +34,13 @@
               <button class="infoBtn" @click.prevent="freeBtn">
                 {{ $t("자유형식 정보입력") }}
               </button>
-              <div class="mt-4 pl-3">
-                <p>
+              <div class="mt-4">
+                <p class="InfoTitle">
                   {{ $t("자유형식정보 입력은") }}<br />{{
                     $t("이미지, 동영상 등을 활용할 수 있습니다")
                   }}
                 </p>
-                <p>
+                <p class="InfoTitle">
                   {{ $t("이미지 최대3개 등록 가능(1MB)") }}<br />{{
                     $t("동영상 최대1개 등록 가능(5MB)")
                   }}
@@ -58,13 +64,15 @@
             </div>
             <div class="w-100 mt-4">
               <ul class="d-flex trans">
-                <button @click="$i18n.locale = 'en'" class="simpleBtn">
+                <button @click="TEnglish" :class="English">
                   English
                 </button>
-                <button @click="$i18n.locale = 'ko'" class="simpleBtn">
+                <span style="color: #f2f2f2;">|</span>
+                <button @click="TKorean" :class="Korean">
                   한국어
                 </button>
-                <button @click="$i18n.locale = 'ja'" class="simpleBtn">
+                <span style="color: #f2f2f2;">|</span>
+                <button @click="TJapanese" :class="Japanese">
                   日本語
                 </button>
               </ul>
@@ -83,6 +91,9 @@ export default {
       click: "",
       clickAgain: "",
       checkedTF: false,
+      English: "simpleBtn",
+      Korean: "simpleBtn",
+      Japanese: "simpleBtn",
     };
   },
   methods: {
@@ -100,16 +111,43 @@ export default {
         this.$router.push("/freeQR");
       }
     },
+    TKorean() {
+      this.$i18n.locale = "ko";
+      this.Korean = "simpleBtn Opacity100";
+      this.English = "simpleBtn";
+      this.Japanese = "simpleBtn";
+    },
+    TEnglish() {
+      this.$i18n.locale = "en";
+      this.English = "simpleBtn Opacity100";
+      this.Korean = "simpleBtn";
+      this.Japanese = "simpleBtn";
+    },
+    TJapanese() {
+      this.$i18n.locale = "ja";
+      this.Japanese = "simpleBtn Opacity100";
+      this.Korean = "simpleBtn";
+      this.English = "simpleBtn";
+    },
   },
   created() {
     let locale = navigator.language || navigator.userLanguege;
     locale = locale.substring(0, 2);
     if (locale === "ko") {
       this.$i18n.locale = "ko";
+      this.Korean = "simpleBtn Opacity100";
+      this.English = "simpleBtn";
+      this.Japanese = "simpleBtn";
     } else if (locale === "en") {
       this.$i18n.locale = "en";
+      this.English = "simpleBtn Opacity100";
+      this.Korean = "simpleBtn";
+      this.Japanese = "simpleBtn";
     } else if (locale === "ja") {
       this.$i18n.locale = "ja";
+      this.Japanese = "simpleBtn Opacity100";
+      this.Korean = "simpleBtn";
+      this.English = "simpleBtn";
     }
     if (this.$store.state.Info.qrlist === "") {
       alert(this.$t("올바르지 않은 접근입니다."));
@@ -149,7 +187,10 @@ export default {
 .infoBtn {
   width: 100%;
   height: 50px;
-  border: 1px solid #898989;
+  border: none;
+  background-color: #2e77ef;
+  color: white;
+  border-radius: 5px;
 }
 .checkbox {
   height: 100%;
@@ -180,8 +221,12 @@ export default {
   width: 67px;
   height: 38px;
   background-color: white;
-  /* border: 1px solid black;
-  border-radius: 30px; */
   border: none;
+  opacity: 0.5;
+}
+.InfoTitle {
+  font-size: 14px;
+  color: #888888;
+  font-weight: 400;
 }
 </style>

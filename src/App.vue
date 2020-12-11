@@ -70,23 +70,35 @@
             <img src="" alt="" />
           </div>
           <div>
-            <p>QRCODE</p>
+            <router-link to="/UseLaw">라이선스 조항</router-link>
           </div>
-          <div>
-            <select name="#" id="#" v-model="langue" @change="selectLang">
-              <option value="ko">
-                언어선택
-              </option>
-              <option value="ko">
+          <div class="LangBox">
+            <label class="LangBtn" for="langToggle">
+              <img
+                src="https://hong4383server.r-e.kr//var/NewQrcode/uploads/translate.png"
+                class="langIcon"
+              />
+            </label>
+            <input
+              type="checkbox"
+              class="d-none"
+              id="langToggle"
+              v-model="isActive"
+              @change="selectLang"
+            />
+            <div :class="langSelectBox" id="langSelectBox">
+              <button class="LangSelectBtn" @click.prevent="Korean">
                 한국어
-              </option>
-              <option value="en">
+              </button>
+              <hr class="m-0" />
+              <button class="LangSelectBtn" @click.prevent="English">
                 English
-              </option>
-              <option value="ja">
+              </button>
+              <hr class="m-0" />
+              <button class="LangSelectBtn" @click.prevent="Japanese">
                 日本語
-              </option>
-            </select>
+              </button>
+            </div>
           </div>
         </nav>
       </footer>
@@ -98,7 +110,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:9000",
+  baseURL: "https://hong4383server.r-e.kr",
 });
 
 export default {
@@ -139,35 +151,73 @@ export default {
         this.$store.state.Navbar.logClass = "lo notShow";
       }
     }
+    window.addEventListener("click", () => {
+      if (!this.langToggle) {
+        this.selectLangOutside();
+      }
+    });
+    console.log(
+      "%c 잠깐만 기다려주세요!",
+      "font-size:50px; color:#ff0167; border: 1px solid #003cff; no-repeat center;"
+    );
+    console.warn(
+      "이 기능은 개빌자를 위해 제작된 기능입니다.\n다른 사람이 정보를 여기에 요청하는 것은 개인정보를 탈취하기 위한 목적이니\n개발자 외엔 절대로 이곳에 텍스트를 쓰지 마세요!"
+    );
+    let agent = navigator.userAgent.toLowerCase();
+    if (
+      (navigator.appName == "Netscape" &&
+        navigator.userAgent.search("Trident") != -1) ||
+      agent.indexOf("msie") != -1
+    ) {
+      alert(
+        "Internet Explorer은 지원되지 않습니다.\n크롬을 설치하여 사용해주시기 바랍니다."
+      );
+    }
   },
   data() {
     return {
+      langToggle: document.getElementById("langToggle"),
       langue: "언어선택",
+      langSelectBox: "LangSelectBox d-none",
+      isActive: false,
     };
   },
   methods: {
-    search() {},
     logout() {
       try {
         localStorage.removeItem("jwt-token");
         this.logstatus = "lo show";
         this.logClass = "lo notShow";
-        location.href = "http://localhost:8080";
+        location.href = "https://hong4383.r-e.kr";
       } catch (err) {
         console.log(err);
       }
     },
     adminPage() {
-      location.href = "http://localhost:8080/admin";
+      location.href = "https://hong4383.r-e.kr/admin";
+    },
+    selectLangInside() {
+      this.isActive = true;
+    },
+    selectLangOutside() {
+      this.isActive = false;
+      this.selectLang();
     },
     selectLang() {
-      if (this.langue === "ko") {
-        this.$i18n.locale = "ko";
-      } else if (this.langue === "en") {
-        this.$i18n.locale = "en";
-      } else if (this.langue === "ja") {
-        this.$i18n.locale = "ja";
+      if (this.isActive == false) {
+        this.langSelectBox = "LangSelectBox d-none";
+      } else {
+        this.langSelectBox = "LangSelectBox";
       }
+    },
+    Korean() {
+      this.$i18n.locale = "ko";
+    },
+    English() {
+      this.$i18n.locale = "en";
+    },
+    Japanese() {
+      this.$i18n.locale = "ja";
     },
   },
 };
@@ -236,7 +286,48 @@ body {
 .btnSearch:focus {
   outline: none;
 }
+.langIcon {
+  width: 20px;
+  height: 20px;
+}
+.LangBtn {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+.LangSelectBtn {
+  border: none;
+  background-color: transparent;
+}
+.LangSelectBtn:focus {
+  outline: none;
+}
+.LangSelectBox {
+  width: 74px;
+  height: 100px;
+  line-height: 33px;
+  position: absolute;
+  bottom: 60px;
+  right: -30px;
+  background-color: white;
+  box-shadow: 0px 0px 15px #cacaca;
+  text-align: center;
+  border-radius: 10px;
+}
+.LangBox {
+  position: relative;
+}
+.notQRBox {
+  margin-top: 2rem;
+  border: none !important;
+}
+.realQRBox {
+  border: none !important;
+}
 @media screen and (max-width: 992px) {
+  .navbar {
+    box-shadow: 0px 10px 30px #a9a9a9;
+  }
   .navigator {
     display: block;
     width: 100%;
@@ -249,6 +340,9 @@ body {
     padding: 0;
   }
   .lo:nth-of-type(1) {
+    margin-top: 0;
+  }
+  .notQRBox {
     margin-top: 0;
   }
 }

@@ -1,30 +1,33 @@
 <template>
   <div>
-    <div class="w-100 mt-5 mb-5">
+    <div class="w-100 mb-5">
       <div class="notQR">
         <div
           class="notQRBox"
           style="border: 1px solid #5c5c5c; border-radius: 10px; overflow: auto"
         >
-          <div class="mt-3 p-4 font-weight-bold" style="height: 10%">
+          <div class="mt-3 p-4 font-weight-bold">
             <div class="d-flex">
-              <p class="ml-3">{{ $t("초기화") }}</p>
+              <p style="font-size: 22px; color: #333;">{{ $t("초기화") }}</p>
             </div>
             <hr />
           </div>
           <div class="show" style="height: 80%">
-            <div class="mt-4 pl-4 pr-4 h-100">
+            <div class="pl-4 pr-4 h-100">
               <div class="formInside">
-                <p>{{ $t("비밀번호를 입력해주세요") }}</p>
-                <form>
+                <p style="font-weight: 700; font-size: 16px; color: #333;">
+                  {{ $t("비밀번호를 입력해주세요") }}
+                </p>
+                <form class="mt-3">
                   <input
                     type="password"
-                    class="illBtn"
+                    class="pwInput"
+                    :placeholder="$t('비밀번호 입력')"
                     autocomplete="off"
                     v-model="pw"
                   />
                 </form>
-                <div class="mt-3">
+                <div class="mt-3" style="color: #888; font-size: 15px;">
                   <small>{{ $t("비밀번호는 4자리 숫자입니다") }}</small
                   ><br />
                   <small>{{
@@ -40,7 +43,11 @@
                 </div>
               </div>
               <div class="onSubmit">
-                <button class="illBtn" @click.prevent="onSubmit">
+                <button
+                  class="btn btn-primary w-100"
+                  @click.prevent="onSubmit"
+                  style="width: 320px; height: 48px; background-color: #2E77EF"
+                >
                   {{ $t("완료") }}
                 </button>
               </div>
@@ -56,7 +63,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:9000",
+  baseURL: "https://hong4383server.r-e.kr",
 });
 export default {
   data() {
@@ -115,11 +122,21 @@ export default {
   cursor: pointer;
 }
 .onSubmit {
-  height: 60%;
+  height: 55%;
   display: flex;
   align-items: flex-end;
 }
 .formInside {
   height: 40%;
+}
+.pwInput {
+  width: 100%;
+  height: 40px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  color: #333333;
+  margin-bottom: 8px;
+  padding-left: 15px;
 }
 </style>

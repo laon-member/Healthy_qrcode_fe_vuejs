@@ -2,53 +2,46 @@
   <div>
     <div class="w-100" style="border-top: 4px solid #2e77ef;">
       <div class="realQR mt-5">
-        <div class="realQRBox" style="overflow: auto;">
-          <div class="d-flex" style="width: 100%; justify-content: center;">
-            <span style="font-weight: 700; color: #333333">{{
-              this.$store.state.Info.qrlist
-            }}</span>
-            <span style="font-weight: 400; color: #333333">{{
-              $t("의 정보")
-            }}</span>
-          </div>
-          <hr />
-          <div class="FreeInfoBox">
-            <div
-              v-for="(picItems, index) in pic"
-              :key="index"
-              class="PictureBox"
-            >
-              <img :src="picItems" class="imgSize" /><br />
-            </div>
-            <div
-              v-if="test != undefined"
-              style="width: 80%; height: 160px; margin: 0 auto;"
-              class="mt-4"
-            >
-              <video controls autoplay name="media" class="video">
-                <source :src="video" type="video/mp4" />
-              </video>
-            </div>
-            <div style="width: 80%; margin: 0 auto;" class="mt-5">
-              <p>{{ text }}</p>
-            </div>
-            <div>
-              <div style="width: 80%; margin: 0 auto;" class="mt-4">
-                <div v-for="(linkItems, index) in link" :key="index">
-                  <p
-                    @click="Sites(link[index])"
-                    style="color: #2e77ef; cursor: pointer"
-                  >
-                    {{ linkItems }}
-                  </p>
+        <div class="realQRBox" style="overflow: auto; border-radius: 10px">
+          <table>
+            <tr>
+              <th scope="row">{{ $t("사진") }}</th>
+              <td>
+                <div v-for="(picItems, index) in pic" :key="index">
+                  <img :src="picItems" class="imgSize" /><br />
                 </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="w-100 centerBlock mt-3"
-            style="height: 20%; color: #888888; font-size: 14px;"
-          >
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">{{ $t("동영상") }}</th>
+              <td>
+                <div v-if="test != undefined">
+                  <video controls autoplay name="media" class="video">
+                    <source :src="video" type="video/mp4" />
+                  </video>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">{{ $t("텍스트") }}</th>
+              <td>
+                {{ text }}
+              </td>
+            </tr>
+            <tr>
+              <th scope="row">{{ $t("링크") }}</th>
+              <td>
+                <div>
+                  <div v-for="linkItems in link" :key="linkItems">
+                    {{ link }}
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr></tr>
+          </table>
+
+          <div class="w-100 centerBlock mt-3" style="height: 20%">
             <hr />
             <p>
               {{ $t("위 정보는 사용자에 의해 입력되었습니다.") }}<br />{{
@@ -60,7 +53,7 @@
             class="pr-3 pb-3 w-100 d-flex align-items-end justify-content-end"
             style="height: 10%"
           >
-            <router-link to="/reset" class="ChangeInfo">
+            <router-link to="/reset" style="text-decoration: underline;">
               {{ $t("정보수정") }}
             </router-link>
           </div>
@@ -77,7 +70,7 @@ export default {
       pic: [],
       video: "",
       text: "",
-      link: [],
+      link: "",
       test: "",
     };
   },
@@ -100,13 +93,7 @@ export default {
 
     this.video = this.$store.state.personInfo.video;
     this.test = this.video;
-    let Links = this.$store.state.personInfo.link.split(",");
-    this.link = Links.slice();
-  },
-  methods: {
-    Sites(linkItems) {
-      window.location = linkItems;
-    },
+    this.link = this.$store.state.personInfo.link;
   },
 };
 </script>
@@ -165,14 +152,12 @@ hr {
   flex-grow: 1;
 }
 .imgSize {
-  width: 100%;
-  height: 160px;
-  margin-top: 1rem;
+  width: 100px;
+  height: 100px;
 }
 .video {
-  width: 100%;
-  height: 160px;
-  margin: 0 auto;
+  width: 200px;
+  height: 100px;
 }
 table {
   border-collapse: collapse;
@@ -186,9 +171,5 @@ td {
 }
 .navbar {
   box-shadow: none !important;
-}
-.PictureBox {
-  width: 80%;
-  margin: 0 auto;
 }
 </style>

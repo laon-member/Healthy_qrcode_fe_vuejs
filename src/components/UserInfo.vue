@@ -1,17 +1,24 @@
 <template>
   <div>
-    <div class="w-100 mt-5">
-      <div class="realQR">
-        <div
-          class="realQRBox"
-          style="border: 1px solid #5c5c5c; overflow-x: auto; border-radius: 10px"
-        >
+    <div class="w-100" style="border-top: 4px solid #2e77ef;">
+      <div class="realQR mt-5">
+        <div class="realQRBox" style=" overflow-x: auto;">
+          <div class="d-flex" style="width: 100%; justify-content: center;">
+            <span style="font-weight: 700; color: #333333">{{
+              this.$store.state.Info.qrlist
+            }}</span>
+            <span style="font-weight: 400; color: #333333">{{
+              $t("의 정보")
+            }}</span>
+          </div>
+          <hr />
           <table>
             <tr>
               <th scope="row" class="">{{ $t("혈액형") }}</th>
               <td>
                 {{ $t(bloodType) }}
               </td>
+              <hr />
             </tr>
             <tr>
               <th scope="row" class="">{{ $t("나이(만)") }}</th>
@@ -117,8 +124,7 @@
           </table>
 
           <div class="w-100 centerBlock mt-3" style="height: 20%">
-            <hr />
-            <p>
+            <p style="color: #888888; font-weight: 400;">
               {{ $t("위 정보는 사용자에 의해 입력되었습니다.") }}<br />{{
                 $t("정보의 정확성이 보장되는 것은 아닙니다.")
               }}
@@ -128,7 +134,7 @@
             class="pr-3 pb-3 w-100 d-flex align-items-end justify-content-end"
             style="height: 10%"
           >
-            <router-link to="/reset" style="text-decoration: underline;">
+            <router-link to="/reset" class="ChangeInfo">
               {{ $t("정보수정") }}
             </router-link>
           </div>
@@ -142,7 +148,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:9000",
+  baseURL: "https://hong4383server.r-e.kr",
+  // baseURL: "http://localhost:9000",
 });
 export default {
   data() {
@@ -170,12 +177,12 @@ export default {
     let currentUrl = window.location.href;
     let splitUrl = currentUrl.split(":");
     let formData = new FormData();
-    formData.append("qrInfo", splitUrl[3]);
+    formData.append("qrInfo", splitUrl[2]); //
     instance.post(`/check_Info`, formData).then((res) => {
       if (res.data === false) {
         this.$router.push("/notQR");
       } else if (res.data === true) {
-        this.$store.state.Info.qrlist = splitUrl[3];
+        this.$store.state.Info.qrlist = splitUrl[2]; //
         this.$router.push("/notInfoQR");
       } else if (res.data.free === "yes") {
         this.$store.state.personInfo.freeInfoText = res.data.freeText;
@@ -184,7 +191,7 @@ export default {
         this.$store.state.personInfo.pic += res.data.pic3;
         this.$store.state.personInfo.video = res.data.video;
         this.$store.state.personInfo.link = res.data.link;
-        this.$store.state.Info.qrlist = splitUrl[3];
+        this.$store.state.Info.qrlist = splitUrl[2]; //
         this.$router.push("/freeInfo");
       } else if (res.data.free === "none") {
         this.bloodType = res.data.bloodType;
@@ -197,7 +204,7 @@ export default {
         }
         this.sex = res.data.sex;
         this.sergery = res.data.sergery.split(",");
-        this.$store.state.Info.qrlist = splitUrl[3];
+        this.$store.state.Info.qrlist = splitUrl[2];
         this.sergery = this.sergery.filter((item) => {
           return item !== null && item !== undefined && item !== "";
         });
@@ -248,10 +255,11 @@ export default {
 }
 .realQRBox th {
   width: 30%;
-  background: #a7a7a7;
   vertical-align: top;
   padding-top: 10px;
   padding-left: 1rem;
+  color: #888888;
+  font-weight: 400;
 }
 .realQRBox td {
   width: 70%;
@@ -263,6 +271,12 @@ export default {
 .realQRBox {
   width: 400px;
   height: 600px;
+}
+.realQRBox {
+  -ms-overflow-style: none;
+}
+.realQRBox::-webkit-scrollbar {
+  display: none;
 }
 .userInfo {
   display: flex;
@@ -292,5 +306,22 @@ td {
   width: 350px;
   padding: 10px;
   vertical-align: top;
+}
+.navbar {
+  box-shadow: none !important;
+}
+.ChangeInfo {
+  width: 103px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2e77ef;
+  color: white !important;
+  font-size: 16px;
+  border-radius: 5px;
+}
+.ChangeInfo:hover {
+  text-decoration: none !important;
 }
 </style>

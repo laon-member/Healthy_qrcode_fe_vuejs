@@ -7,10 +7,12 @@
           <p style="color:#2e77ef; font-weight:600">'s Emergency QR</p>
         </div>
         <p style="font-weight:600; font-size: 25px; color: #fff">
-          QR코드로<br />
-          빠르고 새롭게 정보를 얻어보세요!
+          {{ $t("QR코드로") }}<br />
+          {{ $t("빠르고 새롭게 정보를 얻어보세요!") }}
         </p>
-        <small style="color:#9d9d9d;">DB도 암호화 되어 있습니다.</small>
+        <small style="color:#9d9d9d;">{{
+          $t("DB도 암호화 되어 있습니다.")
+        }}</small>
       </div>
     </div>
   </div>

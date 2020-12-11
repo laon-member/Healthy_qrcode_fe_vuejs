@@ -48,7 +48,8 @@
               QR코드 생성
             </p>
             <hr />
-            <div>
+
+            <div class="mt-2">
               <label style="font-weight:400; margin-bottom: 0; color: #979797;"
                 >QR코드 발급 수량</label
               ><br />
@@ -112,7 +113,7 @@
                       class="btn btn-success sizeRebuild"
                       @click.prevent="MakeQRNow(users.qrlist)"
                     >
-                      발급하기
+                      발급
                     </button>
                   </div>
                   <div v-else class="Unposi">
@@ -149,7 +150,7 @@ import axios from "axios";
 import download from "downloadjs";
 
 const instance = axios.create({
-  baseURL: "http://localhost:9000",
+  baseURL: "https://hong4383server.r-e.kr",
 });
 export default {
   components: {
@@ -382,7 +383,7 @@ p {
     font-size: 10px;
   }
   .QRcodeNumber {
-    width: 58.8% !important;
+    width: 50% !important;
   }
   .UseInfo {
     font-size: 10px;
@@ -396,6 +397,12 @@ p {
   }
   .YearselectBox {
     width: 100%;
+  }
+  .qrlist {
+    font-size: 12px !important;
+  }
+  .YearselectBox {
+    margin-left: 0;
   }
 }
 </style>

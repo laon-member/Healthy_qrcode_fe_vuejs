@@ -50,7 +50,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:9000",
+  baseURL: "https://hong4383server.r-e.kr",
 });
 export default {
   methods: {
@@ -77,7 +77,7 @@ export default {
                   this.$store.state.Login.notAccount = "";
                   let result = res.data;
                   localStorage.setItem("jwt-token", result);
-                  location.href = "http://localhost:8080/";
+                  location.href = "https://hong4383.r-e.kr";
                 }
               });
             } catch (err) {

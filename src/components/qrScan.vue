@@ -41,10 +41,15 @@ import { QrcodeStream } from "vue-qrcode-reader";
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:9000",
+  baseURL: "https://hong4383server.r-e.kr",
 });
 
 export default {
+  data() {
+    return {
+      QrUrl: "",
+    };
+  },
   created() {
     this.$store.state.Qrcode.qrInfo = "";
     this.$store.state.Qrcode.qrScanStatus = "";
@@ -54,8 +59,9 @@ export default {
   },
   methods: {
     onDecode(result) {
+      this.QrUrl = result;
       let result2 = result.split(":");
-      this.$store.state.Qrcode.qrInfo = result2[3];
+      this.$store.state.Qrcode.qrInfo = result2[2];
       this.checkQrInfo();
     },
     async onInit(promise) {
@@ -99,22 +105,17 @@ export default {
           } else if (res.data === true) {
             this.$store.state.Info.qrlist = qrInfo;
             this.$router.push("/notInfoQR"); //첫페이지만 제작됨.
-          } else if (res.data["person"].free === "yes") {
-            this.$store.state.personInfo.freeInfo = res.data["person"].freeInfo;
-            this.$router.push("/freeQR"); //제작되지 않음
-          } else if (res.data["person"].free === "none") {
-            this.$store.state.personInfo.bloodType =
-              res.data["person"].bloodType;
-            this.$store.state.personInfo.age = res.data["person"].age;
-            this.$store.state.personInfo.sex = res.data["person"].sex;
-            this.$store.state.personInfo.sergery = res.data["person"].sergery;
-            this.$store.state.personInfo.ill = res.data["person"].ill;
-            this.$store.state.personInfo.medicine = res.data["person"].medicine;
-            this.$store.state.personInfo.alergy = res.data["person"].alergy;
-            this.$store.state.personInfo.sideEff = res.data["person"].sideEff;
-            this.$store.state.personInfo.number = res.data["person"].number;
-            this.$store.state.personInfo.others = res.data["person"].others;
-            this.$router.push("/nonFreeQR"); //제작되지 않음
+          } else if (res.data.free === "yes") {
+            this.$store.state.personInfo.freeInfoText = res.data.freeText;
+            this.$store.state.personInfo.pic += res.data.pic1 + ",";
+            this.$store.state.personInfo.pic += res.data.pic2 + ",";
+            this.$store.state.personInfo.pic += res.data.pic3;
+            this.$store.state.personInfo.video = res.data.video;
+            this.$store.state.personInfo.link = res.data.link;
+            this.$store.state.Info.qrlist = this.$store.state.Qrcode.qrInfo; //
+            this.$router.push("/freeInfo");
+          } else if (res.data.free === "none") {
+            location.href = this.QrUrl;
           }
         });
       }

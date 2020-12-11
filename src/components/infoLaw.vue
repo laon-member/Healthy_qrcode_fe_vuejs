@@ -1,12 +1,18 @@
 <template>
   <div>
-    <div class="w-100 mt-5 mb-5">
+    <div class="w-100 mb-5">
       <div class="notQR">
         <div
           class="notQRBox"
-          style="border: 1px solid #5c5c5c; border-radius: 10px; overflow: auto"
+          style="border: 1px solid #5c5c5c;
+                 overflow: auto;
+                 width: calc(100% -40px);
+                 margin: 20px auto;
+                 background: #fff;
+                 border-top: 4px solid #2e77ef !important;
+                 box-shadow: 0px 2px 16px -4px rgba(0,0,0,0.2);"
         >
-          <div class="mt-3 p-4 font-weight-bold" style="height: 10%">
+          <div class=" p-4 font-weight-bold" style="height: 10%">
             <div class="d-flex">
               <router-link to="/notInfoQR">
                 <img
@@ -19,9 +25,9 @@
             </div>
             <hr />
           </div>
-          <div class="show">
-            <div class="mt-4 pt-4 pl-4 pr-4">
-              <p>
+          <div class="show" style="width: 80%; margin: 0 auto;">
+            <div class="mt-4 pt-4">
+              <p class="LawInfo">
                 제1조(개인정보의 처리목적) QRCODE은(는) 다음의 목적을 위하여
                 개인정보를 처리합니다. 처리하고 있는 개인정보는 다음의 목적
                 이외의 용도로는 이용되지 않으며, 이용 목적이 변경되는 경우에는
@@ -65,5 +71,10 @@ export default {};
 .backimg {
   width: 25px;
   height: 25px;
+}
+.LawInfo {
+  font-size: 14px;
+  color: #555555;
+  font-weight: 400;
 }
 </style>
