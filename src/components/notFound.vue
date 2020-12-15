@@ -62,7 +62,7 @@ export default {};
 }
 .notQRBox {
   width: 400px;
-  height: 600px;
+  height: 680px;
 }
 .imgSizeNO_qr {
   width: 128px;

@@ -122,7 +122,6 @@ export default {
     },
     checkQrInfo() {
       let qrInfo = this.$store.state.Qrcode.qrInfo;
-      console.log(qrInfo);
       if (qrInfo !== "") {
         this.$store.state.Qrcode.qrScanStatus = "인식되었습니다.";
       } else {

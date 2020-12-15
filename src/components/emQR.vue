@@ -221,7 +221,6 @@
                         id="arm"
                         class="notshow"
                         v-model="sergeryNameArm"
-                        @change="saveSergeryArm"
                       />
                       <label class="sergery" for="arm" value="arm">{{
                         $t("암 수술")
@@ -248,7 +247,6 @@
                         id="simjang"
                         class="notshow"
                         v-model="sergeryNameSimjang"
-                        @change="saveSergerySimjang"
                       />
                       <label class="sergery" for="simjang" value="simjang">{{
                         $t("심장 수술")
@@ -275,7 +273,6 @@
                         id="pe"
                         class="notshow"
                         v-model="sergeryNamePe"
-                        @change="saveSergeryPe"
                       />
                       <label class="sergery" for="pe" value="pe">{{
                         $t("폐 수술")
@@ -302,7 +299,6 @@
                         id="neoi"
                         class="notshow"
                         v-model="sergeryNameNeoi"
-                        @change="saveSergeryNeoi"
                       />
                       <label class="sergery" for="neoi" value="neoi">{{
                         $t("뇌혈관 수술")
@@ -329,7 +325,6 @@
                         id="gan"
                         class="notshow"
                         v-model="sergeryNameGan"
-                        @change="saveSergeryGan"
                       />
                       <label class="sergery" for="gan" value="gan">{{
                         $t("간 수술")
@@ -352,19 +347,19 @@
                     <div
                       class="d-flex"
                       v-for="(sergeryADD, index) in sergeryItems"
-                      :key="sergeryADD.idx"
+                      :key="index"
                     >
                       <input
                         type="text"
                         v-model="sergeryADD.input"
                         :placeholder="$t('직접입력')"
                         :class="sergeryItems[index].Inputclass"
-                        @keyup="SergeryUserSer(index)"
+                        @keyup.prevent="SergeryUserSer(index)"
                       />
                       <select
                         v-model="sergeryADD.option"
                         :class="sergeryItems[index].SelectClass"
-                        @change="saveSergery"
+                        @change.prevent="saveSergery"
                       >
                         <option value="">{{ $t("수술 시기") }}</option>
                         <option value="1">{{ $t("1년 이내") }}</option>
@@ -810,7 +805,7 @@
                   <div>
                     <form>
                       <input
-                        type="text"
+                        type="number"
                         :placeholder="$t('보호자 연락처를 입력해 주세요')"
                         :class="phoneInput"
                         v-model="PhoneInputer"
@@ -822,7 +817,7 @@
                         :class="phoneClass"
                       >
                         <input
-                          type="text"
+                          type="number"
                           v-model="phoneItems[index].input"
                           :placeholder="$t('직접입력')"
                           :class="phoneItems[index].class"
@@ -964,10 +959,10 @@ export default {
       this.UseSubtitle = "pl-4 pr-4";
       this.NewInput = "mt-5";
     }
-    if (this.$store.state.Info.qrlist === "") {
-      alert(this.$t("잘못된 경로입니다."));
-      this.$router.push("/");
-    }
+    // if (this.$store.state.Info.qrlist === "") {
+    //   alert(this.$t("잘못된 경로입니다."));
+    //   this.$router.push("/");
+    // }
   },
 
   data() {
@@ -1002,6 +997,7 @@ export default {
       alergyNoneBtn: "illBtn",
       alergyInputer: "",
       alergyNone: "",
+      alergyChk: false,
       alergyInput: "alergyInput",
       alergyClass: "notShow",
       alergyUser: [],
@@ -1281,21 +1277,24 @@ export default {
       }
     },
     alergyInputEvent() {
-      if (this.alergyInputer !== "") {
+      if (this.alergyInputer != "") {
         this.alergyInput = "alergyInput";
         this.$cookies.set("QRCODE_alergyInput", this.alergyInputer);
         this.alergyNone = "";
         this.alergyNoneBtn = "illBtn";
+        this.alergyChk = true;
       } else {
         this.alergyInput = "alergyInput";
       }
     },
     resetAlergy() {
       this.alergyNoneBtn = "illBtn f5b blueFont";
-      this.alergyItems.splice(0);
       this.alergyNone = "Nothing";
+      this.alergyItems.splice(0);
+      this.alergyChk = true;
       this.alergyInputer = "";
       this.alergyInputEvent();
+      this.$cookies.set("QRCODE_alergyInput", "Nothing");
     },
     addAlergy() {
       if (this.alergyIdx === 0) {
@@ -1313,20 +1312,22 @@ export default {
       }
     },
     //수술
-    saveUserSergery(idxSergery) {
-      if (this.sergeryItems[idxSergery].input !== "") {
-        this.$cookies.set(
-          "QRCODE_sergeryUserName",
-          this.sergeryItems[idxSergery].input
-        );
-        this.$cookies.set(
-          "QRCODE_sergeryUserSelect",
-          this.sergeryItems[idxSergery].option
-        );
-      }
-    },
+    // saveUserSergery(idxSergery) {
+    //   if (this.sergeryItems[idxSergery].input !== "") {
+    //     this.$cookies.set(
+    //       "QRCODE_sergeryUserName",
+    //       this.sergeryItems[idxSergery].input
+    //     );
+    //     this.$cookies.set(
+    //       "QRCODE_sergeryUserSelect",
+    //       this.sergeryItems[idxSergery].option
+    //     );
+    //   }
+    // },
     saveSergeryArm() {
       this.sergeryNoneBtn = "illBtn";
+      this.sergeryNameArm = true;
+      this.sergeryNone = "";
       if (this.sergeryNameArm === true) {
         if (this.sergeryYearArm !== "") {
           this.$cookies.set("QRCODE_sergeryNameArm", true);
@@ -1341,6 +1342,8 @@ export default {
     },
     saveSergerySimjang() {
       this.sergeryNoneBtn = "illBtn";
+      this.sergeryNameSimjang = true;
+      this.sergeryNone = "";
       if (this.sergeryNameSimjang === true) {
         if (this.sergeryYearSimjang !== "") {
           this.$cookies.set("QRCODE_sergeryNameSimjang", true);
@@ -1358,6 +1361,8 @@ export default {
     },
     saveSergeryPe() {
       this.sergeryNoneBtn = "illBtn";
+      this.sergeryNamePe = true;
+      this.sergeryNone = "";
       if (this.sergeryNamePe === true) {
         if (this.sergeryYearPe !== "") {
           this.$cookies.set("QRCODE_sergeryNamePe", true);
@@ -1372,6 +1377,8 @@ export default {
     },
     saveSergeryNeoi() {
       this.sergeryNoneBtn = "illBtn";
+      this.sergeryNameNeoi = true;
+      this.sergeryNone = "";
       if (this.sergeryNameNeoi === true) {
         if (this.sergeryYearNeoi !== "") {
           this.$cookies.set("QRCODE_sergeryNameNeoi", true);
@@ -1386,6 +1393,8 @@ export default {
     },
     saveSergeryGan() {
       this.sergeryNoneBtn = "illBtn";
+      this.sergeryNameGan = true;
+      this.sergeryNone = "";
       if (this.sergeryNameGan === true) {
         if (this.sergeryYearGan !== "") {
           this.$cookies.set("QRCODE_sergeryNameGan", true);
@@ -1402,6 +1411,33 @@ export default {
       this.sergeryNoneBtn = "illBtn f5b";
       this.sergeryNone = "없음";
       this.sergeryItems.splice(0);
+      this.sergeryIdx = 0;
+      this.sergeryItems.push({
+        idx: this.sergeryIdx,
+        input: "",
+        option: "",
+        Inputclass: "Addsergery",
+        SelectClass: "AddsergeryItems",
+      });
+      //연도 초기화
+      this.sergeryYearArm = "";
+      this.sergeryYearSimjang = "";
+      this.sergeryYearPe = "";
+      this.sergeryYearNeoi = "";
+      this.sergeryYearGan = "";
+      //배열 초기화
+      this.sergeryArm = ``;
+      this.sergerySimjang = ``;
+      this.sergerype = ``;
+      this.sergeryNeoi = ``;
+      this.sergeryGan = ``;
+      //모두 해제
+      this.sergeryNameArm = false;
+      this.sergeryNameSimjang = false;
+      this.sergeryNamePe = false;
+      this.sergeryNameNeoi = false;
+      this.sergeryNameGan = false;
+      //쿠키삭제
       this.$cookies.remove("QRCODE_sergeryNameArm");
       this.$cookies.remove("QRCODE_sergeryYearArm");
       this.$cookies.remove("QRCODE_sergeryNameSimjang");
@@ -1424,15 +1460,19 @@ export default {
     },
     addSergery() {
       this.sergeryNoneBtn = "illBtn";
-      let idxSergery = this.sergeryIdx++;
-      this.sergeryItems.push({
-        idx: idxSergery,
-        input: "",
-        option: "",
-        Inputclass: "Addsergery",
-        SelectClass: "AddsergeryItems",
-      });
-      this.saveUserSergery(idxSergery);
+      if (this.sergeryItems.length > 4) {
+        alert("최대 5개의 수술기록만 추가 가능합니다.");
+      } else {
+        let idxSergery = this.sergeryIdx++;
+        this.sergeryItems.push({
+          idx: idxSergery,
+          input: "",
+          option: "",
+          Inputclass: "Addsergery",
+          SelectClass: "AddsergeryItems",
+        });
+        // this.saveUserSergery(idxSergery);
+      }
     },
     SergeryUserSer(index) {
       if (this.sergeryItems[index].input !== "") {
@@ -1468,6 +1508,22 @@ export default {
       this.illItems.splice(0);
       this.ill.splice(0);
       this.ill.push("None");
+      this.illArm = false;
+      this.illSimjang = false;
+      this.illillpe = false;
+      this.illNeoi = false;
+      this.illgan = false;
+      this.illDang = false;
+      this.illGo = false;
+      this.illChi = false;
+      this.IllArmBtn();
+      this.IllSimBtn();
+      this.IllPeBtn();
+      this.IllNeoiBtn();
+      this.IllGanBtn();
+      this.IllDangBtn();
+      this.IllGoBtn();
+      this.IllChiBtn();
       this.$cookies.set("QRCODE_Illreset", true);
       this.$cookies.remove("QRCODE_Illarm");
       this.$cookies.remove("QRCODE_IllSim");
@@ -1478,90 +1534,75 @@ export default {
       this.$cookies.remove("QRCODE_IllGo");
       this.$cookies.remove("QRCODE_IllChi");
     },
-    IllremoveArray(Send) {
-      const findItem = this.medicine.find(function(item) {
-        return item === Send;
-      });
-      const idx = this.ill.indexOf(findItem);
-      this.ill.splice(idx, 1);
-    },
+    //배열 삭제
+    // IllremoveArray(Send) {
+    //   const findItem = this.medicine.find(function(item) {
+    //     return item === Send;
+    //   });
+    //   const idx = this.ill.indexOf(findItem);
+    //   this.ill.splice(idx, 1);
+    // },
     IllArmBtn() {
       if (this.illArm === true) {
-        this.ill.push("illArm");
         this.$cookies.set("QRCODE_Illarm", true);
         this.IllNoneBtn = "illBtn";
       } else {
-        this.IllremoveArray("arm");
         this.$cookies.remove("QRCODE_Illarm");
       }
     },
     IllSimBtn() {
       if (this.illSimjang === true) {
-        this.ill.push("illSim");
         this.$cookies.set("QRCODE_IllSim", true);
         this.IllNoneBtn = "illBtn";
       } else {
-        this.IllremoveArray("sim");
         this.$cookies.remove("QRCODE_IllSim");
       }
     },
     IllPeBtn() {
       if (this.illpe === true) {
-        this.ill.push("illPe");
         this.$cookies.set("QRCODE_Illpe", true);
         this.IllNoneBtn = "illBtn";
       } else {
-        this.IllremoveArray("pe");
         this.$cookies.remove("QRCODE_Illpe");
       }
     },
     IllNeoiBtn() {
       if (this.illNeoi === true) {
-        this.ill.push("illNeoi");
         this.$cookies.set("QRCODE_Illneoi", true);
         this.IllNoneBtn = "illBtn";
       } else {
-        this.IllremoveArray("neoi");
         this.$cookies.remove("QRCODE_Illneoi");
       }
     },
     IllGanBtn() {
       if (this.illgan === true) {
-        this.ill.push("illGan");
         this.$cookies.set("QRCODE_Illgan", true);
         this.IllNoneBtn = "illBtn";
       } else {
-        this.IllremoveArray("gan");
         this.$cookies.remove("QRCODE_Illgan");
       }
     },
     IllDangBtn() {
       if (this.illDang === true) {
-        this.ill.push("illDang");
         this.$cookies.set("QRCODE_Illdang", true);
         this.IllNoneBtn = "illBtn";
       } else {
-        this.IllremoveArray("dang");
         this.$cookies.remove("QRCODE_Illdang");
       }
     },
     IllGoBtn() {
       if (this.illGo === true) {
-        this.ill.push("illGo");
         this.$cookies.set("QRCODE_IllGo", true);
         this.IllNoneBtn = "illBtn";
       } else {
-        this.IllremoveArray("go");
         this.$cookies.remove("QRCODE_IllGo");
       }
     },
     IllChiBtn() {
       if (this.illChi === true) {
-        this.ill.push("illChi");
         this.$cookies.set("QRCODE_IllChi", true);
         this.IllNoneBtn = "illBtn";
       } else {
-        this.IllremoveArray("chi");
         this.$cookies.remove("QRCODE_IllChi");
       }
     },
@@ -1775,9 +1816,12 @@ export default {
     },
     usePhoneCookies() {
       let Phone = this.$cookies.get("QRCODE_phone");
-      if (Phone !== "") {
+      if (Phone !== "none") {
         this.PhoneInputer = this.$cookies.get("QRCODE_phone");
         this.PhoneInputEvent();
+      }
+      if (Phone == "none") {
+        this.resetPhone();
       }
     },
     useIllCookies() {
@@ -1815,7 +1859,6 @@ export default {
       }
       if (this.$cookies.get("QRCODE_Illreset")) {
         this.resetIll();
-        this.saveIllNone();
       }
     },
     useMedicineCookies() {
@@ -1887,6 +1930,15 @@ export default {
         this.saveSergeryNone();
       }
     },
+    UseAlergyCookies() {
+      let Alergy = this.$cookies.get("QRCODE_alergyInput");
+      if (Alergy == "Nothing") {
+        this.resetAlergy();
+      } else {
+        this.alergyInput = this.$cookies.get("QRCODE_alergyInput");
+        this.alergyInputEvent();
+      }
+    },
     UseCookies() {
       this.SexChk();
       this.BloodChk();
@@ -1896,8 +1948,7 @@ export default {
       this.usePhoneCookies();
       this.UseSergeryCookies();
       this.useIllCookies();
-      this.alergyInputer = this.$cookies.get("QRCODE_alergyInput");
-      this.alergyInputEvent();
+      this.UseAlergyCookies();
       this.others = this.$cookies.get("QRCODE_ohters");
       this.mainTitle = "";
       this.main = "";
@@ -1907,7 +1958,34 @@ export default {
       this.RH = this.$cookies.get("QRCODE_RH");
       this.RhChk();
     },
+    illCheckArray() {
+      if (this.illArm === true) {
+        this.ill.push("illArm");
+      }
+      if (this.illSimjang === true) {
+        this.ill.push("illSim");
+      }
+      if (this.illpe === true) {
+        this.ill.push("illPe");
+      }
+      if (this.illNeoi === true) {
+        this.ill.push("illNeoi");
+      }
+      if (this.illgan === true) {
+        this.ill.push("illGan");
+      }
+      if (this.illDang === true) {
+        this.ill.push("illDang");
+      }
+      if (this.illGo === true) {
+        this.ill.push("illGo");
+      }
+      if (this.illChi === true) {
+        this.ill.push("illChi");
+      }
+    },
     onSubmit() {
+      this.illCheckArray();
       let formData = new FormData();
       let sergeryUsers = JSON.stringify(this.sergeryItems);
       let illUsers = JSON.stringify(this.illItems);
@@ -1932,20 +2010,23 @@ export default {
         if (this.sergeryItems[0].input === "") {
           alert(this.$t("수술내역이 정확하지 않습니다."));
         }
-      } else if (this.ill.length == 0) {
+      }
+      if (this.ill.length == 0) {
         if (this.illItems.length == 1) {
           if (this.illItems[0].input == "") {
             alert(this.$t("투병중이신 병이 제대로 선택되지 않았습니다."));
           }
         }
-      } else if (this.medicine.length === 0) {
-        if (this.medicineItems[0].input === "") {
-          alert(this.$t("복용중이신 약을 선택해주세요."));
+      }
+      if (this.medicine.length === 0) {
+        if (this.medicineItems.length == 1) {
+          if (this.medicineItems[0].input === "") {
+            alert(this.$t("복용중이신 약을 선택해주세요."));
+          }
         }
-      } else if (this.alergyNone === "") {
-        if (this.alergyInputer === "") {
-          alert(this.$t("알러지 정보를 입력해주세요"));
-        }
+      }
+      if (this.alergyChk == false) {
+        alert(this.$t("알러지 정보를 입력해주세요"));
       } else if (this.sideEff === "") {
         alert(this.$t("조영제 부작용을 선택해주세요"));
       } else if (this.PhoneInfoChk == false) {

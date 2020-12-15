@@ -505,6 +505,11 @@ export default {
       this.NewInput = "notshow mt-5";
     },
     onSubmit() {
+      alert(
+        this.$t(
+          "변경되었습니다. 확인을 누르면 자동으로 홈으로 이동되니 잠시만 기다려주십시오.."
+        )
+      );
       console.log(this.VideoFile);
       if (this.freeInfoText === "") {
         alert(this.$t("적어도 텍스트는 입력해주셔야합니다."));
@@ -544,7 +549,7 @@ export default {
           })
           .then((res) => {
             if (res.data === true) {
-              alert("변경이 완료되었습니다.");
+              this.$router.push("/");
             }
           });
       }

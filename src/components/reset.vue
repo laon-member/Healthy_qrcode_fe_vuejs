@@ -92,7 +92,8 @@ export default {
             } else {
               instance.post("/reset", formData).then((res2) => {
                 if (res2.data === true) {
-                  this.$router.push("/");
+                  // this.$router.push("/");
+                  location.href = "https://hong4383.r-e.kr";
                 }
               });
             }

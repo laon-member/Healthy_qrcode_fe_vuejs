@@ -14,9 +14,14 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <router-link to="/" class="navbar-brand"
-            ><p class="logo">QRCODE</p></router-link
-          >
+          <router-link to="/" class="navbar-brand">
+            <!-- <p class="logo">QRCODE</p> -->
+            <img
+              src="https://hong4383server.r-e.kr//var/NewQrcode/uploads/Icons/favicon.ico"
+              alt=""
+              class="logo"
+            />
+          </router-link>
 
           <div class="navbar-collapse collapse" id="navbarSupportedContent">
             <div class="navbar-nav mr-auto">
@@ -27,9 +32,9 @@
               >
                 {{ $t("QR코드 스캔") }}
               </router-link>
-              <router-link style="font-size: 14px;" to="/" class="nav-link">
+              <!-- <router-link style="font-size: 14px;" to="/" class="nav-link">
                 {{ $t("뭐 넣을지 고민중") }}
-              </router-link>
+              </router-link> -->
             </div>
             <form class="form-inline my-2 my-lg-0">
               <!-- <input type="text" :value="this.$store.state.Navbar.searchData" class="searchBox mr-sm-2 notShow">
@@ -70,7 +75,7 @@
             <img src="" alt="" />
           </div>
           <div>
-            <router-link to="/UseLaw">라이선스 조항</router-link>
+            <router-link to="/UseLaw">{{ $t("라이선스 조항") }}</router-link>
           </div>
           <div class="LangBox">
             <label class="LangBtn" for="langToggle">
@@ -137,7 +142,7 @@ export default {
             this.$store.state.Navbar.logstatus = "lo notShow";
           } else {
             this.$store.state.Navbar.logClass = "lo notShow";
-            this.$store.state.Navbar.logstatus = "lo notShow";
+            this.$store.state.Navbar.logstatus = "lo show";
           }
         });
       } else {
@@ -238,9 +243,11 @@ body {
   display: none;
 }
 .logo {
-  margin-bottom: inherit;
+  /* margin-bottom: inherit;
   color: #2e77ef;
-  font-weight: 600;
+  font-weight: 600; */
+  width: 35px;
+  height: 35px;
 }
 .lo {
   font-size: 14px;
@@ -310,7 +317,7 @@ body {
   bottom: 60px;
   right: -30px;
   background-color: white;
-  box-shadow: 0px 0px 15px #cacaca;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 16px -4px;
   text-align: center;
   border-radius: 10px;
 }

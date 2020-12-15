@@ -188,7 +188,9 @@ export default {
           .then((res) => {
             download(res.data, "uploads.zip", "application/zip");
           });
-        alert("발급이 완료되었습니다.");
+        alert(
+          "발급신청이 완료되었습니다.\n서버의 따라 시간이 다소 소요 될 수 있습니다."
+        );
       }
     },
     reloadInfinite() {
