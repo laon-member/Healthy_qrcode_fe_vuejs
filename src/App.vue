@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100%;">
     <div id="body">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <nav :class="$store.state.Navbar.Toggle">
         <div class="m-auto navigator">
           <button
             class="navbar-toggler"
@@ -14,21 +14,21 @@
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <router-link to="/" class="navbar-brand">
-            <!-- <p class="logo">QRCODE</p> -->
+          <!-- <router-link to="/" class="navbar-brand">
+            <p class="logo">QRCODE</p>
             <img
               src="https://hong4383server.r-e.kr//var/NewQrcode/uploads/Icons/favicon.ico"
               alt=""
               class="logo"
             />
-          </router-link>
+          </router-link> -->
 
           <div class="navbar-collapse collapse" id="navbarSupportedContent">
             <div class="navbar-nav mr-auto">
               <router-link
                 to="/qrScan"
                 class="nav-link"
-                style="font-size: 14px; padding-left: 0; color:#2e77ef;"
+                style="font-size: 14px; padding-left: 0; color:#404040;"
               >
                 {{ $t("QR코드 스캔") }}
               </router-link>
@@ -40,23 +40,23 @@
               <!-- <input type="text" :value="this.$store.state.Navbar.searchData" class="searchBox mr-sm-2 notShow">
                 <button class="btnSearch my-2 my-sm-0 notShow" type="submit" @click="search">{{$t('검색')}}</button> -->
             </form>
-            <router-link
+            <!-- <router-link
               :class="this.$store.state.Navbar.logstatus"
               to="/adminLogin"
-              style="text-decoration: none"
+              style="text-decoration: none; color:#1991e0;"
               >{{ $t("로그인") }}</router-link
-            >
+            > -->
             <button
               :class="this.$store.state.Navbar.logClass"
               @click="logout"
-              style="padding: 0"
+              style="padding: 0; color: #e31437;"
             >
               {{ $t("로그아웃") }}
             </button>
             <button
               :class="this.$store.state.Navbar.logClass"
               @click="adminPage"
-              style="text-decoration: none;"
+              style="text-decoration: none; color:#404040;"
             >
               {{ $t("관리자페이지") }}
             </button>
@@ -74,13 +74,13 @@
           <div>
             <img src="" alt="" />
           </div>
-          <div>
+          <!-- <div>
             <router-link to="/UseLaw">{{ $t("라이선스 조항") }}</router-link>
-          </div>
+          </div> -->
           <div class="LangBox">
             <label class="LangBtn" for="langToggle">
               <img
-                src="https://hong4383server.r-e.kr//var/NewQrcode/uploads/translate.png"
+                src="https://www.sequence9.com/server//var/NewQrcode/uploads/translate.png"
                 class="langIcon"
               />
             </label>
@@ -115,7 +115,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://hong4383server.r-e.kr",
+  baseURL: "https://www.sequence9.com/server",
 });
 
 export default {
@@ -137,6 +137,11 @@ export default {
         const formData = new FormData();
         formData.append("token", token);
         instance.post("/check_token", formData).then((res) => {
+          if (res.data == "Expired") {
+            this.$store.state.Login.Token = this.$t(
+              "세션이 만료되었습니다. 다시 로그인해주세요."
+            );
+          }
           if (res.data === true) {
             this.$store.state.Navbar.logClass = "lo show";
             this.$store.state.Navbar.logstatus = "lo notShow";
@@ -183,7 +188,7 @@ export default {
     return {
       langToggle: document.getElementById("langToggle"),
       langue: "언어선택",
-      langSelectBox: "LangSelectBox d-none",
+      langSelectBox: "LangSelectBox visi-h",
       isActive: false,
     };
   },
@@ -193,13 +198,13 @@ export default {
         localStorage.removeItem("jwt-token");
         this.logstatus = "lo show";
         this.logClass = "lo notShow";
-        location.href = "https://hong4383.r-e.kr";
+        location.href = "https://www.sequence9.com";
       } catch (err) {
         console.log(err);
       }
     },
     adminPage() {
-      location.href = "https://hong4383.r-e.kr/admin";
+      location.href = "https://www.sequence9.com/admin";
     },
     selectLangInside() {
       this.isActive = true;
@@ -210,9 +215,9 @@ export default {
     },
     selectLang() {
       if (this.isActive == false) {
-        this.langSelectBox = "LangSelectBox d-none";
+        this.langSelectBox = "LangSelectBox visi-h";
       } else {
-        this.langSelectBox = "LangSelectBox";
+        this.langSelectBox = "LangSelectBox visi-v";
       }
     },
     Korean() {
@@ -320,6 +325,7 @@ body {
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 16px -4px;
   text-align: center;
   border-radius: 10px;
+  transition: all 0.3s;
 }
 .LangBox {
   position: relative;
@@ -330,6 +336,16 @@ body {
 }
 .realQRBox {
   border: none !important;
+}
+.visi-h {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 0.3s, opacity 0.3s linear;
+}
+.visi-v {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s linear;
 }
 @media screen and (max-width: 992px) {
   .navbar {

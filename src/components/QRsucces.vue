@@ -58,6 +58,9 @@
 
 <script>
 export default {
+  beforeMount() {
+    this.$store.state.Navbar.Toggle = "d-none";
+  },
   methods: {
     selfClose() {
       self.opener = self;
@@ -67,7 +70,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .closingBtn {
   width: 100%;
   display: flex;
@@ -89,5 +92,8 @@ export default {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+.Visible {
+  display: none !important;
 }
 </style>

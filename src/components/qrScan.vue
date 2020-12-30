@@ -41,10 +41,14 @@ import { QrcodeStream } from "vue-qrcode-reader";
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://hong4383server.r-e.kr",
+  baseURL: "https://www.sequence9.com/",
 });
 
 export default {
+  beforeMount() {
+    this.$store.state.Navbar.Toggle =
+      "Visible navbar navbar-expand-lg navbar-light bg-light";
+  },
   data() {
     return {
       QrUrl: "",

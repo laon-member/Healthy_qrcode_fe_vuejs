@@ -86,6 +86,9 @@
 
 <script>
 export default {
+  beforeMount() {
+    this.$store.state.Navbar.Toggle = "d-none";
+  },
   data() {
     return {
       click: "",
@@ -131,6 +134,7 @@ export default {
     },
   },
   created() {
+    this.$store.state.Navbar.Toggle = "d-none";
     let locale = navigator.language || navigator.userLanguege;
     locale = locale.substring(0, 2);
     if (locale === "ko") {
@@ -174,7 +178,7 @@ export default {
 }
 .notQRBox {
   width: 400px;
-  height: 680px;
+  height: 725px;
 }
 .userLawlink {
   color: black;

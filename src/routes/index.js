@@ -108,7 +108,7 @@ const router = new Router({
       name: "QRsucces",
       component: QRsucces,
       meta: {
-        title: "QRCODE",
+        title: "QRCODE 성공",
       },
     },
     {

@@ -26,30 +26,31 @@
                     autocomplete="off"
                     v-model="pw"
                   />
+                  <div class="mt-3" style="color: #888; font-size: 15px;">
+                    <small>{{ $t("비밀번호는 4자리 숫자입니다") }}</small
+                    ><br />
+                    <small>{{
+                      $t("비밀번호 분실 시 초기화가 불가능합니다")
+                    }}</small
+                    ><br />
+                    <small>{{ $t("비밀번호는 관리자도 알 수 없습니다") }}</small
+                    ><br />
+                    <small>{{
+                      $t("초기화 선택 시 처음부터 정보를 입력해야 합니다")
+                    }}</small>
+                    <br />
+                  </div>
+                  <div class="onSubmit">
+                    <button
+                      class="btn btn-primary w-100"
+                      @click.prevent="onSubmit"
+                      style="width: 320px; height: 48px; background-color: #2E77EF"
+                      type="submit"
+                    >
+                      {{ $t("완료") }}
+                    </button>
+                  </div>
                 </form>
-                <div class="mt-3" style="color: #888; font-size: 15px;">
-                  <small>{{ $t("비밀번호는 4자리 숫자입니다") }}</small
-                  ><br />
-                  <small>{{
-                    $t("비밀번호 분실 시 초기화가 불가능합니다")
-                  }}</small
-                  ><br />
-                  <small>{{ $t("비밀번호는 관리자도 알 수 없습니다") }}</small
-                  ><br />
-                  <small>{{
-                    $t("초기화 선택 시 처음부터 정보를 입력해야 합니다")
-                  }}</small>
-                  <br />
-                </div>
-              </div>
-              <div class="onSubmit">
-                <button
-                  class="btn btn-primary w-100"
-                  @click.prevent="onSubmit"
-                  style="width: 320px; height: 48px; background-color: #2E77EF"
-                >
-                  {{ $t("완료") }}
-                </button>
               </div>
             </div>
           </div>
@@ -63,7 +64,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://hong4383server.r-e.kr",
+  baseURL: "https://www.sequence9.com/server",
 });
 export default {
   data() {
@@ -72,6 +73,7 @@ export default {
     };
   },
   beforeMount() {
+    this.$store.state.Navbar.Toggle = "d-none";
     if (this.$store.state.Info.qrlist === "") {
       alert(this.$t("잘못된 경로입니다."));
       this.$router.push("/");
@@ -93,7 +95,8 @@ export default {
               instance.post("/reset", formData).then((res2) => {
                 if (res2.data === true) {
                   // this.$router.push("/");
-                  location.href = "https://hong4383.r-e.kr";
+                  alert(this.$t("초기화되었습니다."));
+                  location.href = "https://www.sequence9.com";
                 }
               });
             }
@@ -126,6 +129,7 @@ export default {
   height: 55%;
   display: flex;
   align-items: flex-end;
+  margin-top: 12rem;
 }
 .formInside {
   height: 40%;

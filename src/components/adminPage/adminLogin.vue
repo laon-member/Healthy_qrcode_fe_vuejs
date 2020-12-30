@@ -40,6 +40,7 @@
             로그인
           </button>
           <small style="color:red;">{{ $store.state.Login.notAccount }}</small>
+          <small style="color:red;">{{ $t($store.state.Login.Token) }}</small>
         </div>
       </form>
     </div>
@@ -50,9 +51,13 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://hong4383server.r-e.kr",
+  baseURL: "https://www.sequence9.com/server",
 });
 export default {
+  beforeMount() {
+    this.$store.state.Navbar.Toggle =
+      "Visible navbar navbar-expand-lg navbar-light bg-light";
+  },
   methods: {
     submit() {
       try {
@@ -71,13 +76,15 @@ export default {
               formData.append("pw", this.$store.state.Login.pw);
               instance.post("/adminLogin", formData).then((res) => {
                 if (res.data === false) {
+                  this.$store.state.Login.Token = "";
                   this.$store.state.Login.notAccount =
                     "아이디 또는 비밀번호가 올바르지 않습니다.";
                 } else {
                   this.$store.state.Login.notAccount = "";
                   let result = res.data;
                   localStorage.setItem("jwt-token", result);
-                  location.href = "https://hong4383.r-e.kr";
+                  this.$store.state.Login.Token = "";
+                  location.href = "https://www.sequence9.com/admin";
                 }
               });
             } catch (err) {
@@ -93,7 +100,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .bannerColor {
   background: linear-gradient(-45deg, #e7f9fc, #ffeff7, #fff7dc) !important;
 }

@@ -64,10 +64,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  beforeMount() {
+    this.$store.state.Navbar.Toggle = "d-none";
+  },
+};
 </script>
 
-<style>
+<style scoped>
 .backimg {
   width: 25px;
   height: 25px;
@@ -76,5 +80,8 @@ export default {};
   font-size: 14px;
   color: #555555;
   font-weight: 400;
+}
+.Visible {
+  display: none !important;
 }
 </style>

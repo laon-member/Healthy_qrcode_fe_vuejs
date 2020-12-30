@@ -59,6 +59,7 @@
                     <button
                       class="UseCookiesBtn mt-4"
                       @click.prevent="dontuseCookies"
+                      style="font-size: 14px;"
                     >
                       {{ $t("새로 입력하기") }}
                     </button>
@@ -68,7 +69,10 @@
               <div :class="main">
                 <div class="freeIconBtn">
                   <div class="freeIconBtnList-items">
-                    <div style="opacity: 50%" :class="PicBtn">
+                    <div
+                      style="opacity: 50%; width: 20%; display: flex; flex-direction: column; align-items: center"
+                      :class="PicBtn"
+                    >
                       <button class="btnSize d-flex" @click.prevent="picUpload">
                         <img
                           src="./img/pic.png"
@@ -83,9 +87,14 @@
                           />
                         </div>
                       </button>
-                      <small style="font-size: 12px;">사진</small>
+                      <!-- <small style="font-size: 12px;" class="mt-1">{{
+                        $t("사진")
+                      }}</small> -->
                     </div>
-                    <div style="opacity: 50%" :class="VideoBtn">
+                    <div
+                      style="opacity: 50%; width: 20%; display: flex; flex-direction: column; align-items: center"
+                      :class="VideoBtn"
+                    >
                       <button
                         class="btnSize d-flex"
                         @click.prevent="videoUpload"
@@ -103,9 +112,14 @@
                           />
                         </div>
                       </button>
-                      <small style="font-size: 12px;">영상</small>
+                      <!-- <small style="font-size: 12px;" class="mt-1">{{
+                        $t("영상")
+                      }}</small> -->
                     </div>
-                    <div style="opacity: 50%" :class="TextBtn">
+                    <div
+                      style="opacity: 50%; width: 20%; display: flex; flex-direction: column; align-items: center"
+                      :class="TextBtn"
+                    >
                       <button
                         class="btnSize d-flex"
                         @click.prevent="textUpload"
@@ -123,9 +137,14 @@
                           />
                         </div>
                       </button>
-                      <small style="font-size: 12px;">글귀</small>
+                      <!-- <small style="font-size: 12px;" class="mt-1">{{
+                        $t("글귀")
+                      }}</small> -->
                     </div>
-                    <div style="opacity: 50%" :class="LinkBtn">
+                    <div
+                      style="opacity: 50%; width: 20%; display: flex; flex-direction: column; align-items: center"
+                      :class="LinkBtn"
+                    >
                       <button
                         class="btnSize d-flex"
                         @click.prevent="fileUpload"
@@ -143,7 +162,9 @@
                           />
                         </div>
                       </button>
-                      <small style="font-size: 12px;">링크</small>
+                      <!-- <small style="font-size: 12px;" class="mt-1">{{
+                        $t("링크")
+                      }}</small> -->
                     </div>
                   </div>
                 </div>
@@ -251,12 +272,14 @@
                           class="PwBtn"
                           v-model="pw"
                         />
+                        <small style="color: red;">{{ $t(pc) }}</small>
                         <input
                           type="number"
                           :placeholder="$t('비밀번호 확인')"
                           class="PwBtn"
                           v-model="pw2"
                         />
+                        <small style="color: red;">{{ $t(pc2) }}</small>
                         <br />
                         <div class="mt-1" style="color: #888888">
                           <small>{{
@@ -302,11 +325,13 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://hong4383server.r-e.kr",
+  baseURL: "https://www.sequence9.com/server",
 });
 
 export default {
   beforeMount() {
+    this.TextBtn = "Opacity100";
+    this.$store.state.Navbar.Toggle = "d-none";
     let letChkCookies = this.$cookies.get("QRCODE_InfoText");
     if (letChkCookies !== null) {
       this.mainTitle = "notshow";
@@ -347,7 +372,7 @@ export default {
       pw2: "",
       PicBtn: "",
       VideoBtn: "",
-      TextBtn: "",
+      TextBtn: "Opacity100",
       LinkBtn: "",
       //실행상태
       picUse: "usingIcon notshow",
@@ -364,28 +389,31 @@ export default {
       VideoColorText: "TextColor",
       TextColorText: "TextColor",
       LinkColorText: "TextColor",
+      //에러
+      pc: "",
+      pc2: "",
     };
   },
 
   methods: {
     ColorChk() {
       if (this.Picfile.length != 0) {
-        this.PicColorText = "TextColor blueFont";
+        this.PicColorText = "TextColor blueFont2";
       }
       if (this.VideoFile.length != 0) {
-        this.VideoColorText = "TextColor blueFont";
+        this.VideoColorText = "TextColor blueFont2";
       }
       if (this.freeInfoText != "") {
-        this.TextColorText = "TextColor blueFont";
+        this.TextColorText = "TextColor blueFont2";
       }
       if (this.link1 != "") {
-        this.LinkColorText = "TextColor blueFont";
+        this.LinkColorText = "TextColor blueFont2";
       }
       if (this.link2 != "") {
-        this.LinkColorText = "TextColor blueFont";
+        this.LinkColorText = "TextColor blueFont2";
       }
       if (this.link3 != "") {
-        this.LinkColorText = "TextColor blueFont";
+        this.LinkColorText = "TextColor blueFont2";
       }
       if (this.freeInfoText == "") {
         this.TextColorText = "TextColor";
@@ -457,8 +485,8 @@ export default {
       this.PicBtn = "";
     },
     UploadPic(e) {
-      if (e.target.files[0].size > 1000000) {
-        alert(this.$t("1MB가 넘는 사진입니다. 다른 사진을 선택해주세요."));
+      if (e.target.files[0].size > 5000000) {
+        alert(this.$t("5MB가 넘는 사진입니다. 다른 사진을 선택해주세요."));
       } else {
         this.Picfile.push(this.$refs.picFile1.files[0]);
         this.picName.push(this.$refs.picFile1.files[0].name);
@@ -466,9 +494,9 @@ export default {
       }
     },
     UploadVideo(e) {
-      if (e.target.files[0].size > 5000000) {
+      if (e.target.files[0].size > 10000000) {
         alert(
-          this.$t("영상의 용량이 5MB가 넘습니다. 다른 영상파일을 선택해주세요")
+          this.$t("영상의 용량이 10MB가 넘습니다. 다른 영상파일을 선택해주세요")
         );
       } else {
         this.VideoFile = e.target.files[0];
@@ -505,11 +533,6 @@ export default {
       this.NewInput = "notshow mt-5";
     },
     onSubmit() {
-      alert(
-        this.$t(
-          "변경되었습니다. 확인을 누르면 자동으로 홈으로 이동되니 잠시만 기다려주십시오.."
-        )
-      );
       console.log(this.VideoFile);
       if (this.freeInfoText === "") {
         alert(this.$t("적어도 텍스트는 입력해주셔야합니다."));
@@ -519,15 +542,23 @@ export default {
         alert(this.$t("동영상은 최대 1개까지만 업로드가 가능합니다."));
       } else if (this.pw === "") {
         alert(this.$t("비밀번호를 입력해주세요."));
+        this.pc = "필수 입력항목입니다.";
       } else if (this.pw2 === "") {
         alert(
           this.$t("비밀번호 재확인을 위해 확인란에 비밀번호를 입력해주세요.")
         );
+        this.pc2 = "필수 입력항목입니다.";
+        this.pc = "";
       } else if (this.pw.length !== 4) {
         alert(this.$t("비밀번호가 4자리가 아닙니다."));
       } else if (this.pw !== this.pw2) {
         alert(this.$t("비밀번호가 일치하지 않습니다."));
       } else {
+        alert(
+          this.$t(
+            "변경되었습니다. 확인을 누르면 자동으로 홈으로 이동되니 잠시만 기다려주십시오.."
+          )
+        );
         let link = [];
         link.push(this.link1);
         link.push(this.link2);
@@ -641,10 +672,13 @@ export default {
   opacity: 1 !important;
 }
 .blueFont {
+  color: white !important;
+}
+.blueFont2 {
   color: #2e77ef !important;
 }
 .PicButton {
-  width: 85px;
+  width: 110px;
   height: 44px;
   background: #ffffff;
   border: 1px solid #2e77ef;

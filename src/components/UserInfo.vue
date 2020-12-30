@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="w-100" style="border-top: 4px solid #2e77ef;">
-      <div class="realQR mt-5">
+      <div class="realQR mt-3">
         <div class="realQRBox" style=" overflow-x: auto;">
-          <div class="d-flex" style="width: 100%; justify-content: center;">
+          <!-- <div class="d-flex" style="width: 100%; justify-content: center;">
             <span style="font-weight: 700; color: #333333">{{
               this.$store.state.Info.qrlist
             }}</span>
             <span style="font-weight: 400; color: #333333">{{
               $t("의 정보")
             }}</span>
-          </div>
+          </div> -->
           <hr />
           <table>
             <tr>
@@ -124,7 +124,7 @@
           </table>
 
           <div class="w-100 centerBlock mt-3" style="height: 20%">
-            <p style="color: #888888; font-weight: 400;">
+            <p style="color: #888888; font-weight: 400; text-align: center;">
               {{ $t("위 정보는 사용자에 의해 입력되었습니다.") }}<br />{{
                 $t("정보의 정확성이 보장되는 것은 아닙니다.")
               }}
@@ -148,10 +148,13 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://hong4383server.r-e.kr",
+  baseURL: "https://www.sequence9.com/server",
   // baseURL: "http://localhost:9000",
 });
 export default {
+  beforeMount() {
+    this.$store.state.Navbar.Toggle = "d-none";
+  },
   data() {
     return {
       bloodType: "",
@@ -270,7 +273,7 @@ export default {
 }
 .realQRBox {
   width: 400px;
-  height: 600px;
+  height: 700px;
 }
 .realQRBox {
   -ms-overflow-style: none;
@@ -291,8 +294,7 @@ export default {
   padding-left: 1rem;
 }
 .centerBlock {
-  padding: 1rem 3rem 2rem 3rem;
-  text-align: center;
+  padding: 1rem 3rem 4rem 5rem;
 }
 hr {
   flex-grow: 1;
@@ -311,7 +313,6 @@ td {
   box-shadow: none !important;
 }
 .ChangeInfo {
-  width: 103px;
   height: 44px;
   display: flex;
   justify-content: center;
@@ -320,6 +321,7 @@ td {
   color: white !important;
   font-size: 16px;
   border-radius: 5px;
+  padding: 20px;
 }
 .ChangeInfo:hover {
   text-decoration: none !important;

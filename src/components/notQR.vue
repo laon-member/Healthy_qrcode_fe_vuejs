@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-5">
     <div class="w-100">
       <div class="notQR">
         <div
@@ -8,7 +8,7 @@
         >
           <div class="p-4" style="height: 20%;">
             <img
-              src="https://hong4383server.r-e.kr//var/NewQrcode/uploads/Icons/no_qr.png"
+              src="https://www.sequence9.com/server//var/NewQrcode/uploads/Icons/no_qr.png"
               class="imgSizeNO_qr"
             />
           </div>
@@ -29,7 +29,7 @@
             </small>
           </div>
           <div class="pr-4" style="height: 30%">
-            <div class="w-100 h-100 d-flex align-items-end justify-content-end">
+            <div class="w-100 h-75 d-flex align-items-end justify-content-end">
               <router-link to="/" class="btn btn-primary homebtn">{{
                 $t("홈으로 이동")
               }}</router-link>
@@ -42,7 +42,12 @@
 </template>
 
 <script>
-export default {};
+export default {
+  beforeMount() {
+    this.$store.state.Navbar.Toggle =
+      "Visible navbar navbar-expand-lg navbar-light bg-light";
+  },
+};
 </script>
 
 <style>
@@ -62,7 +67,7 @@ export default {};
 }
 .notQRBox {
   width: 400px;
-  height: 680px;
+  height: 725px;
 }
 .imgSizeNO_qr {
   width: 128px;

@@ -58,6 +58,7 @@
                 <button
                   @click.prevent="QRcodeDown"
                   class="btn btn-success mt-2"
+                  style="font-size: 12px;"
                 >
                   발급하기
                 </button>
@@ -150,7 +151,7 @@ import axios from "axios";
 import download from "downloadjs";
 
 const instance = axios.create({
-  baseURL: "https://hong4383server.r-e.kr",
+  baseURL: "https://www.sequence9.com/server",
 });
 export default {
   components: {
@@ -167,6 +168,8 @@ export default {
     };
   },
   beforeMount() {
+    this.$store.state.Navbar.Toggle =
+      "Visible navbar navbar-expand-lg navbar-light bg-light";
     instance.post("/meQRlist/" + this.limit, this.yearSelect).then((res) => {
       this.qrData = this.qrData.concat(res.data);
     });

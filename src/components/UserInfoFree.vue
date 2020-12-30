@@ -1,16 +1,16 @@
 <template>
   <div>
     <div class="w-100" style="border-top: 4px solid #2e77ef;">
-      <div class="realQR mt-5">
+      <div class="realQR mt-3">
         <div class="realQRBox" style="overflow: auto;">
-          <div class="d-flex" style="width: 100%; justify-content: center;">
+          <!-- <div class="d-flex" style="width: 100%; justify-content: center;">
             <span style="font-weight: 700; color: #333333">{{
               this.$store.state.Info.qrlist
             }}</span>
             <span style="font-weight: 400; color: #333333">{{
               $t("의 정보")
             }}</span>
-          </div>
+          </div> -->
           <hr />
           <div class="FreeInfoBox">
             <div
@@ -50,7 +50,7 @@
             style="height: 20%; color: #888888; font-size: 14px;"
           >
             <hr />
-            <p>
+            <p style="text-align: center;">
               {{ $t("위 정보는 사용자에 의해 입력되었습니다.") }}<br />{{
                 $t("정보의 정확성이 보장되는 것은 아닙니다.")
               }}
@@ -82,6 +82,7 @@ export default {
     };
   },
   beforeMount() {
+    this.$store.state.Navbar.Toggle = "d-none";
     this.text = this.$store.state.personInfo.freeInfoText;
     let picN = this.$store.state.personInfo.pic;
     picN = picN.split(",");
@@ -102,6 +103,10 @@ export default {
     this.test = this.video;
     let Links = this.$store.state.personInfo.link.split(",");
     this.link = Links.slice();
+    if (this.$store.state.Info.qrlist === "") {
+      alert(this.$t("잘못된 경로입니다."));
+      this.$router.push("/");
+    }
   },
   methods: {
     Sites(linkItems) {
@@ -141,7 +146,7 @@ export default {
 }
 .realQRBox {
   width: 400px;
-  height: 600px;
+  height: 700px;
 }
 .userInfo {
   display: flex;
@@ -158,15 +163,14 @@ export default {
   padding-left: 1rem;
 }
 .centerBlock {
-  padding: 1rem 3rem 2rem 3rem;
-  text-align: center;
+  padding: 1rem 3rem 4rem 5rem;
 }
 hr {
   flex-grow: 1;
 }
 .imgSize {
   width: 100%;
-  height: 160px;
+  /* height: 160px; */
   margin-top: 1rem;
 }
 .video {

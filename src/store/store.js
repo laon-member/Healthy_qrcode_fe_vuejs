@@ -9,6 +9,7 @@ export const store = new Vuex.Store({
       searchData: "",
       logClass: "lo notShow",
       logstatus: "lo",
+      Toggle: "",
     },
     Login: {
       id: "",
@@ -16,6 +17,7 @@ export const store = new Vuex.Store({
       idErr: "",
       pwErr: "",
       notAccount: "",
+      Token: "",
     },
     Qrcode: {
       qrInfo: "",

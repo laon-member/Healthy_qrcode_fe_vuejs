@@ -76,6 +76,7 @@
                     {{ $t("1. 혈액형을 선택해주세요") }}
                   </p>
                 </div>
+                <small style="color: red;">{{ $t(bc) }}</small>
               </div>
               <div class="mt-3">
                 <div class="pl-4 pr-4">
@@ -140,6 +141,7 @@
                     {{ $t("2. 생년월일을 입력해주세요") }}
                   </p>
                 </div>
+                <small style="color: red;">{{ $t(yc) }}</small>
               </div>
               <div class="mt-3">
                 <div class="pl-4 pr-4">
@@ -178,6 +180,7 @@
                     {{ $t("3. 성별을 선택해주세요") }}
                   </p>
                 </div>
+                <small style="color: red;">{{ $t(sec) }}</small>
               </div>
               <div class="mt-3">
                 <div class="pl-4 pr-4">
@@ -210,6 +213,7 @@
                     }}</span>
                   </p>
                 </div>
+                <small style="color: red;">{{ $t(sc) }}</small>
               </div>
               <div class="mt-3">
                 <form>
@@ -403,6 +407,7 @@
                     }}</span>
                   </p>
                 </div>
+                <small style="color: red;">{{ $t(ic) }}</small>
               </div>
               <div class="mt-3">
                 <div class="pl-4 pr-4">
@@ -559,6 +564,7 @@
                     }}</span>
                   </p>
                 </div>
+                <small style="color: red;">{{ $t(mc) }}</small>
               </div>
               <div class="mt-3">
                 <div class="pl-4 pr-4">
@@ -713,6 +719,7 @@
                     {{ $t("7. 알레르기 정보를 입력해주세요") }}
                   </p>
                 </div>
+                <small style="color: red;">{{ $t(ac) }}</small>
               </div>
               <div class="mt-3">
                 <div class="pl-4 pr-4">
@@ -766,6 +773,7 @@
                     {{ $t("8. 조영제 부작용이 있으신가요?") }}
                   </p>
                 </div>
+                <small style="color: red;">{{ $t(sic) }}</small>
               </div>
               <div class="mt-3">
                 <div class="pl-4 pr-4">
@@ -799,6 +807,7 @@
                     {{ $t("9. 보호자 연락처를 입력해주세요") }}
                   </p>
                 </div>
+                <small style="color: red;">{{ $t(nc) }}</small>
               </div>
               <div class="mt-3">
                 <div class="pl-4 pr-4">
@@ -891,12 +900,14 @@
                       class="pwInput"
                       v-model="pw"
                     />
+                    <small style="color: red;">{{ $t(pc) }}</small>
                     <input
                       type="number"
                       :placeholder="$t('비밀번호 확인')"
                       class="pwInput"
                       v-model="pw2"
                     />
+                    <small style="color: red;">{{ $t(pc2) }}</small>
                     <br />
                     <small style="color: #888888; font-size: 14px;">{{
                       $t("비밀번호는 4자리 숫자로 가능합니다")
@@ -940,11 +951,12 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://hong4383server.r-e.kr",
+  baseURL: "https://www.sequence9.com/server",
 });
 
 export default {
   beforeMount() {
+    this.$store.state.Navbar.Toggle = "d-none";
     let chkCookies = this.$cookies.get("QRCODE_blood");
     if (chkCookies === null) {
       this.mainTitle = "";
@@ -959,10 +971,10 @@ export default {
       this.UseSubtitle = "pl-4 pr-4";
       this.NewInput = "mt-5";
     }
-    // if (this.$store.state.Info.qrlist === "") {
-    //   alert(this.$t("잘못된 경로입니다."));
-    //   this.$router.push("/");
-    // }
+    if (this.$store.state.Info.qrlist === "") {
+      alert(this.$t("잘못된 경로입니다."));
+      this.$router.push("/");
+    }
   },
 
   data() {
@@ -1100,6 +1112,18 @@ export default {
       ],
       //기타응급상황
       others: "",
+      //에러
+      bc: "",
+      yc: "",
+      sec: "",
+      sc: "",
+      ic: "",
+      mc: "",
+      ac: "",
+      sic: "",
+      nc: "",
+      pc: "",
+      pc2: "",
     };
   },
 
@@ -1507,7 +1531,7 @@ export default {
       this.IllNoneBtn = "illBtn f5b blueFont";
       this.illItems.splice(0);
       this.ill.splice(0);
-      this.ill.push("None");
+      this.ill.push("Nothing");
       this.illArm = false;
       this.illSimjang = false;
       this.illillpe = false;
@@ -1544,6 +1568,7 @@ export default {
     // },
     IllArmBtn() {
       if (this.illArm === true) {
+        this.ill.splice(0);
         this.$cookies.set("QRCODE_Illarm", true);
         this.IllNoneBtn = "illBtn";
       } else {
@@ -1552,6 +1577,7 @@ export default {
     },
     IllSimBtn() {
       if (this.illSimjang === true) {
+        this.ill.splice(0);
         this.$cookies.set("QRCODE_IllSim", true);
         this.IllNoneBtn = "illBtn";
       } else {
@@ -1560,6 +1586,7 @@ export default {
     },
     IllPeBtn() {
       if (this.illpe === true) {
+        this.ill.splice(0);
         this.$cookies.set("QRCODE_Illpe", true);
         this.IllNoneBtn = "illBtn";
       } else {
@@ -1568,6 +1595,7 @@ export default {
     },
     IllNeoiBtn() {
       if (this.illNeoi === true) {
+        this.ill.splice(0);
         this.$cookies.set("QRCODE_Illneoi", true);
         this.IllNoneBtn = "illBtn";
       } else {
@@ -1576,6 +1604,7 @@ export default {
     },
     IllGanBtn() {
       if (this.illgan === true) {
+        this.ill.splice(0);
         this.$cookies.set("QRCODE_Illgan", true);
         this.IllNoneBtn = "illBtn";
       } else {
@@ -1584,6 +1613,7 @@ export default {
     },
     IllDangBtn() {
       if (this.illDang === true) {
+        this.ill.splice(0);
         this.$cookies.set("QRCODE_Illdang", true);
         this.IllNoneBtn = "illBtn";
       } else {
@@ -1592,6 +1622,7 @@ export default {
     },
     IllGoBtn() {
       if (this.illGo === true) {
+        this.ill.splice(0);
         this.$cookies.set("QRCODE_IllGo", true);
         this.IllNoneBtn = "illBtn";
       } else {
@@ -1600,6 +1631,7 @@ export default {
     },
     IllChiBtn() {
       if (this.illChi === true) {
+        this.ill.splice(0);
         this.$cookies.set("QRCODE_IllChi", true);
         this.IllNoneBtn = "illBtn";
       } else {
@@ -1723,7 +1755,7 @@ export default {
       this.medicineItems.splice(0);
       this.medicine.splice(0);
       this.medicineNoneBtn = "illBtn f5b blueFont";
-      this.medicine.push("none");
+      this.medicine.push("Nothing");
       this.$cookies.set("QRCODE_MEDI", "None");
     },
     //전화번호
@@ -2002,41 +2034,117 @@ export default {
         this.sergeryGan;
       if (this.bloodType === "") {
         alert(this.$t("혈액형을 선택해주세요!"));
+        this.bc = "필수 입력항목입니다.";
+        this.ill.splice(0);
       } else if (birth === "") {
         alert(this.$t("생년월일을 제대로 입력해주세요!"));
+        this.yc = "필수 입력항목입니다.";
+        this.bc = "";
+        this.ill.splice(0);
       } else if (this.sex === "") {
         alert(this.$t("성별을 선택해주세요"));
+        this.sec = "필수 입력항목입니다.";
+        this.yc = "";
+        this.bc = "";
+        this.ill.splice(0);
       } else if (sergeryChk === "") {
         if (this.sergeryItems[0].input === "") {
           alert(this.$t("수술내역이 정확하지 않습니다."));
+          this.sc = "필수 입력항목입니다.";
+          this.sec = "";
+          this.yc = "";
+          this.bc = "";
+          this.ill.splice(0);
         }
-      }
-      if (this.ill.length == 0) {
+      } else if (this.ill.length == 0) {
         if (this.illItems.length == 1) {
           if (this.illItems[0].input == "") {
             alert(this.$t("투병중이신 병이 제대로 선택되지 않았습니다."));
+            this.ic = "필수 입력항목입니다.";
+            this.sc = "";
+            this.sec = "";
+            this.yc = "";
+            this.bc = "";
+            this.ill.splice(0);
           }
         }
-      }
-      if (this.medicine.length === 0) {
+      } else if (this.medicine.length === 0) {
         if (this.medicineItems.length == 1) {
           if (this.medicineItems[0].input === "") {
             alert(this.$t("복용중이신 약을 선택해주세요."));
+            this.mc = "필수 입력항목입니다.";
+            this.ic = "";
+            this.sc = "";
+            this.sec = "";
+            this.yc = "";
+            this.bc = "";
+            this.ill.splice(0);
           }
         }
-      }
-      if (this.alergyChk == false) {
+      } else if (this.alergyChk == false) {
         alert(this.$t("알러지 정보를 입력해주세요"));
-      } else if (this.sideEff === "") {
+        this.ac = "필수 입력항목입니다.";
+        this.mc = "";
+        this.ic = "";
+        this.sc = "";
+        this.sec = "";
+        this.yc = "";
+        this.bc = "";
+        this.ill.splice(0);
+      }
+      if (this.sideEff === "") {
         alert(this.$t("조영제 부작용을 선택해주세요"));
+        this.ill.splice(0);
+        this.sic = "필수 입력항목입니다.";
+        this.ac = "";
+        this.mc = "";
+        this.ic = "";
+        this.sc = "";
+        this.sec = "";
+        this.yc = "";
+        this.bc = "";
       } else if (this.PhoneInfoChk == false) {
         alert(this.$t("연락처를 입력해주세요"));
+        this.nc = "필수 입력항목입니다.";
+        this.sic = "";
+        this.ac = "";
+        this.mc = "";
+        this.ic = "";
+        this.sc = "";
+        this.sec = "";
+        this.yc = "";
+        this.bc = "";
+        this.ill.splice(0);
       } else if (this.pw === "") {
         alert(this.$t("비밀번호를 입력해주세요."));
+        this.pc = "필수 입력항목입니다.";
+        this.nc = "";
+        this.sic = "";
+        this.ac = "";
+        this.mc = "";
+        this.ic = "";
+        this.sc = "";
+        this.sec = "";
+        this.yc = "";
+        this.bc = "";
+        this.ill.splice(0);
       } else if (this.pw !== this.pw2) {
         alert(this.$t("비밀번호가 일치하지 않습니다."));
+        this.pc2 = "필수 입력항목입니다.";
+        this.pc = "필수 입력항목입니다.";
+        this.nc = "";
+        this.sic = "";
+        this.ac = "";
+        this.mc = "";
+        this.ic = "";
+        this.sc = "";
+        this.sec = "";
+        this.yc = "";
+        this.bc = "";
+        this.ill.splice(0);
       } else if (this.pw2.length !== 4) {
         alert(this.$t("비밀번호가 4자리가 아닙니다."));
+        this.ill.splice(0);
       } else {
         let sergerySelect =
           this.sergeryNone +
@@ -2083,7 +2191,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 * {
   transition: ease 0.3s;
 }
@@ -2100,7 +2208,7 @@ export default {
   display: block;
 }
 .blueFont {
-  color: #2e77ef !important;
+  color: white !important;
 }
 .blood {
   width: 50%;
@@ -2113,7 +2221,8 @@ export default {
   justify-content: center;
 }
 .f5b {
-  border: 2px solid #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 .nothing {
   width: 100%;
@@ -2177,7 +2286,8 @@ export default {
   align-items: center;
 }
 .UserSer {
-  border: 2px solid #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 .AddsergeryItems {
   width: 50%;
@@ -2198,19 +2308,24 @@ export default {
   outline: 0;
 }
 #arm[type="checkbox"]:checked ~ .arm {
-  border: 2px solid #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #simjang[type="checkbox"]:checked ~ .simjang {
-  border: 2px solid #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #pe[type="checkbox"]:checked ~ .pe {
-  border: 2px solid #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #neoi[type="checkbox"]:checked ~ .neoi {
-  border: 2px solid #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #gan[type="checkbox"]:checked ~ .gan {
-  border: 2px solid #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 .illBtn {
   width: 100%;
@@ -2235,36 +2350,36 @@ export default {
   text-align: center;
 }
 #arm2[type="checkbox"]:checked ~ .arm2 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #simjang2[type="checkbox"]:checked ~ .simjang2 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #pe2[type="checkbox"]:checked ~ .pe2 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #neoi2[type="checkbox"]:checked ~ .neoi2 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #gan2[type="checkbox"]:checked ~ .gan2 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #dang[type="checkbox"]:checked ~ .dang {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #gohyeol[type="checkbox"]:checked ~ .gohyeol {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #chi[type="checkbox"]:checked ~ .chi {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 .medicineBtn {
   width: 100%;
@@ -2276,36 +2391,36 @@ export default {
   align-items: center;
 }
 #arm3[type="checkbox"]:checked ~ .arm3 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #simjang3[type="checkbox"]:checked ~ .simjang3 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #pe3[type="checkbox"]:checked ~ .pe3 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #neoi3[type="checkbox"]:checked ~ .neoi3 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #gan3[type="checkbox"]:checked ~ .gan3 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #dang2[type="checkbox"]:checked ~ .dang2 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #gohyeol2[type="checkbox"]:checked ~ .gohyeol2 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 #chi2[type="checkbox"]:checked ~ .chi2 {
-  border: 2px solid #2e77ef !important;
-  color: #2e77ef !important;
+  background-color: #2e77ef !important;
+  color: white !important;
 }
 .alergyInput {
   width: 100%;
